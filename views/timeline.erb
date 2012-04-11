@@ -4,13 +4,13 @@
 <div class="span-16" id="maincol">
   <h3>Timeline</h3>
   
-  Posts from all users.
+  <%= t.site.posts_from_all_users %>
   <br />
   <%= erb :_posts %>
 </div>
 <div class="span-7 last" id="rightcol">
   <div class="span-7 box">
-    <h4>New users</h4>
+    <h4><%= t.site.new_users %></h4>
     <%= erb :_user_list, :locals => {:users => User.new_users} %>
   </div>
 </div>

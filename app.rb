@@ -4,6 +4,7 @@ require 'sinatra'
 require 'erb'
 require 'redis'
 require 'sinatra/namespace'
+require 'sinatra/r18n'
 
 #URL_PREFIX='/porot'
 URL_PREFIX=''
@@ -138,32 +139,32 @@ helpers do
     distance_in_seconds = (Time.now - time).round
     case distance_in_seconds
     when 0..10
-      return "just now"
+      return t.time.just_now
     when 10..60
-      return "less than a minute ago"
+      return t.time.less_than_a_minute_ago
     end
     distance_in_minutes = (distance_in_seconds/60).round
     case distance_in_minutes
     when 0..1
-      return "a minute ago"
+      return t.time.a_minute_ago
     when 2..45
-      return distance_in_minutes.round.to_s + " minutes ago"
+      return distance_in_minutes.round.to_s + t.time.minutes_ago
     when 46..89
-      return "about an hour ago"
+      return t.tie.about_an_hour_ago
     when 90..1439        
-      return (distance_in_minutes/60).round.to_s + " hours ago"
+      return (distance_in_minutes/60).round.to_s + t.time.hours_ago
     when 1440..2879
-      return "about a day ago"
+      return t.time.about_a_day_ago
     when 2880..43199
-      (distance_in_minutes / 1440).round.to_s + " days ago"
+      (distance_in_minutes / 1440).round.to_s + t.time.days_ago
     when 43200..86399
-       "about a month ago"
+      t.time.about_a_month_ago
     when 86400..525599   
-      (distance_in_minutes / 43200).round.to_s + " months ago"
+      (distance_in_minutes / 43200).round.to_s + t.time.months_ago
     when 525600..1051199
-      "about a year ago"
+      t.time.about_a_year_ago
     else
-      "over " + (distance_in_minutes / 525600).round.to_s + " years ago"
+      t.time.over + (distance_in_minutes / 525600).round.to_s + t.time.years_ago
     end
   end
 end

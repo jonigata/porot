@@ -2,7 +2,7 @@
 <%= erb :header %>
 
 <div class="span-16" id="maincol">
-  <h2>Mentions of: <%= @user.username %></h2>
+  <h2><%= "#{t.site.mentions_prefix}#{@user.username}#{t.site.mentions_suffix}" %></h2>
   <% if @logged_in_user != @user %>
     <div class="box">  
       <% if @logged_in_user.following?(@user) %>

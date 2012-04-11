@@ -10,8 +10,8 @@
     </div>
   <% end %>
   <% if @posts.empty? %>
-    No posts.
+    <%= t.site.no_posts %>
   <% else %>
-    <%= link_to("<i>older >></i>","timeline/#{@page+1}") %>
+    <%= link_to("<i>#{t.site.older} >></i>","timeline/#{@page+1}") %>
   <% end %>
 </div>
