@@ -11,5 +11,7 @@
   <% end %>
   <% if @posts.empty? %>
     No posts.
+  <% else %>
+    <%= link_to("<i>older >></i>","timeline/#{@page+1}") %>
   <% end %>
 </div>

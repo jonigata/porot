@@ -46,8 +46,9 @@ namespace URL_PREFIX do
     send_file '#{path}.#{ext}'
   end
 
-  get '/timeline' do
-    @posts = Timeline.page(1)
+  get '/timeline/:page' do |page|
+    @page = page.to_i
+    @posts = Timeline.page(@page)
     erb :timeline
   end
 
