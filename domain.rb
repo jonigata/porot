@@ -3,7 +3,7 @@ class Timeline
   def self.page(page)
     from      = (page-1)*10
     to        = (page)*10
-    post_ids = redis.list_range("timeline", from, to)
+    post_ids = redis.lrange("timeline", from, to)
     post_ids.map {|post_id| Post.new(post_id)}
   end
 end
@@ -45,7 +45,7 @@ class User < Model
   end
   
   def self.find_by_id(id)
-    if redis.key?("user:id:#{id}:username")
+    if redis.exists("user:id:#{id}:username")
       User.new(id)
     end
   end
@@ -57,12 +57,12 @@ class User < Model
     redis.set("user:username:#{username}", user_id)
     redis.set("user:id:#{user_id}:salt", salt)
     redis.set("user:id:#{user_id}:hashed_password", hash_pw(salt, password))
-    redis.push_head("users", user_id)
+    redis.lpush("users", user_id)
     User.new(user_id)
   end
   
   def self.new_users
-    redis.list_range("users", 0, 10).map do |user_id|
+    redis.lrange("users", 0, 10).map do |user_id|
       User.new(user_id)
     end
   end
@@ -82,61 +82,61 @@ class User < Model
   
   def posts(page=1)
     from, to = (page-1)*10, page*10
-    redis.list_range("user:id:#{id}:posts", from, to).map do |post_id|
+    redis.lrange("user:id:#{id}:posts", from, to).map do |post_id|
       Post.new(post_id)
     end
   end
   
   def timeline(page=1)
     from, to = (page-1)*10, page*10
-    redis.list_range("user:id:#{id}:timeline", from, to).map do |post_id|
+    redis.lrange("user:id:#{id}:timeline", from, to).map do |post_id|
       Post.new(post_id)
     end
   end
   
   def mentions(page=1)
     from, to = (page-1)*10, page*10
-    redis.list_range("user:id:#{id}:mentions", from, to).map do |post_id|
+    redis.lrange("user:id:#{id}:mentions", from, to).map do |post_id|
       Post.new(post_id)
     end
   end
   
   def add_post(post)
-    redis.push_head("user:id:#{id}:posts", post.id)
-    redis.push_head("user:id:#{id}:timeline", post.id)
+    redis.lpush("user:id:#{id}:posts", post.id)
+    redis.lpush("user:id:#{id}:timeline", post.id)
   end
   
   def add_timeline_post(post)
-    redis.push_head("user:id:#{id}:timeline", post.id)
+    redis.lpush("user:id:#{id}:timeline", post.id)
   end
   
   def add_mention(post)
-    redis.push_head("user:id:#{id}:mentions", post.id)
+    redis.lpush("user:id:#{id}:mentions", post.id)
   end
   
   def follow(user)
     return if user == self
-    redis.set_add("user:id:#{id}:followees", user.id)
+    redis.sadd("user:id:#{id}:followees", user.id)
     user.add_follower(self)
   end
   
   def stop_following(user)
-    redis.set_delete("user:id:#{id}:followees", user.id)
+    redis.srem("user:id:#{id}:followees", user.id)
     user.remove_follower(self)
   end
   
   def following?(user)
-    redis.set_member?("user:id:#{id}:followees", user.id)
+    redis.sismember("user:id:#{id}:followees", user.id)
   end
   
   def followers
-    redis.set_members("user:id:#{id}:followers").map do |user_id|
+    redis.smembers("user:id:#{id}:followers").map do |user_id|
       User.new(user_id)
     end
   end
   
   def followees
-    redis.set_members("user:id:#{id}:followees").map do |user_id|
+    redis.smembers("user:id:#{id}:followees").map do |user_id|
       User.new(user_id)
     end
   end
@@ -144,11 +144,11 @@ class User < Model
   protected
   
   def add_follower(user)
-    redis.set_add("user:id:#{id}:followers", user.id)
+    redis.sadd("user:id:#{id}:followers", user.id)
   end
   
   def remove_follower(user)
-    redis.set_delete("user:id:#{id}:followers", user.id)
+    redis.srem("user:id:#{id}:followers", user.id)
   end
 end
   
@@ -160,7 +160,7 @@ class Post < Model
     post.user_id = user.id
     post.created_at = Time.now.to_s
     post.user.add_post(post)
-    redis.push_head("timeline", post_id)
+    redis.lpush("timeline", post_id)
     post.user.followers.each do |follower|
       follower.add_timeline_post(post)
     end

@@ -1,9 +1,20 @@
-Retwis-RB
-=========
+porot
+=====
 
-An example Twitter application using the Redis key-value database.
+An example Twitter application fork from retwis-rb
+see https://github.com/danlucraft/retwis-rb
 
-Daniel Lucraft (dan@fluentradical.com)
+Starting Application
+--------------------
+
+Follow instruction of retwis-rb after install ruby redis binding
+
+ * sudo gem install redis
+
+Major modification from retwis-rb
+---------------------------------
+
+ * use public redis binding instead of rubyredis.rb
 
 Requirements
 ------------
@@ -11,14 +22,7 @@ Requirements
  * Ruby
  * Sinatra: sudo gem install sinatra
  * Redis: http://code.google.com/p/redis/
-
-Starting Application
---------------------
-
-Make sure the redis server is running.
-Run:
-
-   ruby app.rb
+ * Redis binding: sudo gem install redis
 
 License
 -------

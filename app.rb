@@ -2,15 +2,16 @@
 require 'rubygems'
 require 'sinatra'  
 require 'erb'
-require 'rubyredis'
+require 'redis'
 
 require 'domain'
 require 'login-signup'
 
 set :sessions, true
+set :public_folder, File.dirname(__FILE__) + '/public'
 
 def redis
-  $redis ||= RedisClient.new(:timeout => nil)
+  $redis ||= Redis.new(:host => '127.0.0.1')
 end
 
 before do
@@ -20,6 +21,10 @@ end
 get '/' do
   @posts = @logged_in_user.timeline
   erb :index
+end
+
+get '/:path.:ext' do |path, ext|
+  send_file '#{path}.#{ext}'
 end
 
 get '/timeline' do
