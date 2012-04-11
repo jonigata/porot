@@ -1,0 +1,34 @@
+site:
+  title: porot
+  subtitle: ""
+  query: ", what's on your mind?"
+  follower_prefix: follower
+  follower_prefix_plural: followers
+  follower_suffix: ""
+  follower_suffix_plural: ""
+  followee_prefix: Following
+  followee_prefix_plural: Following
+  followee_suffix: ""
+  followee_suffix_plural: ""
+  name_prefix: ""
+  name_suffix: ""
+  older: older
+  mentions_prefix: "Mentions of: "
+  mentions_suffix: ""
+  no_posts: No posts.
+  post_from_all_users: Posts from  all useres.
+  new_users: New users
+time:
+  just_now: " just now"
+  less_than_a_minute_ago: "less than a minute ago"
+  a_minute_ago: "a minute ago"
+  minutes_ago: " minutes ago"
+  about_an_hour_ago: "about an hour ago"
+  hours_ago: " hours ago"
+  about_a_day_ago: "about a day ago"
+  days_ago: " days ago"
+  about_a_month_ago: "about a month ago"
+  months_ago: " months ago"
+  about_a_year_ago: "about a year ago"
+  over: "over "
+  years_ago: " years ago"

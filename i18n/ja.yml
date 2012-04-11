@@ -1,0 +1,34 @@
+site:
+  title: ぽろっと！
+  subtitle: 思いついたことをついぽろっと出してしまう場所です
+  query: 、思いついたことを書いてね
+  follower_prefix: フォロワー
+  follower_prefix_plural: フォロワー
+  follower_suffix: ""
+  follower_suffix_plural: ""
+  followee_prefix: フォローしている
+  followee_prefix_plural: フォローしている
+  followee_suffix: ""
+  followee_suffix_plural: ""
+  name_prefix: ""
+  name_suffix: さん
+  older: もっと昔の発言
+  mentions_prefix: ""
+  mentions_suffix: "宛の発言"
+  no_posts: 該当する発言はありません
+  posts_from_all_users: 全員の発言
+  new_users: 新しいユーザ
+time:
+  just_now: 今さっき
+  less_than_a_minute_ago: 1分くらい前
+  a_minute_ago: 1分前
+  minutes_ago: 分前
+  about_an_hour_ago: 1時間前
+  hours_ago: 時間前
+  about_a_day_ago: 1日前
+  days_ago: 日前
+  about_a_month_ago: 1ヶ月前
+  months_ago: ヶ月前
+  about_a_year_ago: 1年前
+  over: ""
+  years_ago: 年以上前
