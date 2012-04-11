@@ -39,8 +39,7 @@ namespace URL_PREFIX do
   end
 
   get '/' do
-    @posts = @logged_in_user.timeline
-    erb :index
+    draw_index
   end
 
   get '/:path.:ext' do |path, ext|
@@ -61,8 +60,7 @@ namespace URL_PREFIX do
       @posting_error = "Keep it to 140 characters please!"
     end
     if @posting_error
-      @posts = @logged_in_user.timeline
-      erb :index
+      draw_index
     else
       Post.create(@logged_in_user, params[:content])
       redirect to('/')
@@ -167,10 +165,11 @@ helpers do
       t.time.over + (distance_in_minutes / 525600).round.to_s + t.time.years_ago
     end
   end
+
+  def draw_index
+    @posts = @logged_in_user.timeline
+    @followers = @logged_in_user.followers
+    @followees = @logged_in_user.followees
+    erb :index
+  end
 end
-        
-
-
-
-
-
