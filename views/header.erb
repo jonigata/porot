@@ -1,12 +1,12 @@
 <ntml>
   <head>
     <title>porot</title>
-    <link rel="stylesheet" href="<%=URL_PREFIX%>/css/screen.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="<%=URL_PREFIX%>/css/print.css" type="text/css" media="print"> 
+    <link rel="stylesheet" <%=href("css/screen.css")%> type="text/css" media="screen, projection">
+    <link rel="stylesheet" <%=href("css/print.css")%> type="text/css" media="print"> 
     <!--[if IE]>
-      <link rel="stylesheet" href="<%=URL_PREFIX%>/css/ie.css" type="text/css" media="screen, projection">
+      <link rel="stylesheet" <%=href("css/ie.css")%> type="text/css" media="screen, projection">
     <![endif]-->
-    <link rel="stylesheet" href="<%=URL_PREFIX%>/css/custom.css" type="text/css" media="screen, projection"> 
+    <link rel="stylesheet" <%=href("css/custom.css")%> type="text/css" media="screen, projection"> 
   </head>
   <body>
     <br />
@@ -18,11 +18,11 @@
           <div class="span-12 last right-align">
             <% if @logged_in_user %>
               <br /><br />
-              <a href="<%=URL_PREFIX%>/">home</a> | 
-              <a href="<%=URL_PREFIX%>/<%= @logged_in_user.username %>/mentions">mentions</a> | 
-                <%= link_to_user(@logged_in_user) %> | 
-              <a href="<%=URL_PREFIX%>/timeline">timeline</a> | 
-              <a href="<%=URL_PREFIX%>/logout">logout</a>
+			  <%= link_to('home', '') %> |
+			  <%= link_to('mentions', "#{@logged_in_user.username}/mentions") %> |
+              <%= link_to_user(@logged_in_user) %> | 
+			  <%= link_to('timeline', 'timeline') %> |
+			  <%= link_to('logout', 'logout') %>
             <% end %>
           </div>
         <hr />

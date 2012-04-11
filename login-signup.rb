@@ -1,6 +1,6 @@
 namespace URL_PREFIX do
   before do
-    unless %W(#{URL_PREFIX}/login #{URL_PREFIX}/signup).include?(request.path_info) or 
+    unless [link_text('login'), link_text('signup')].include?(request.path_info) or 
 	request.path_info =~ /\.css$/ or 
 	@logged_in_user = User.find_by_id(session["user_id"])
       redirect to('/login'), 303

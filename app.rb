@@ -5,8 +5,8 @@ require 'erb'
 require 'redis'
 require 'sinatra/namespace'
 
-URL_PREFIX='/porot'
-#URL_PREFIX=''
+#URL_PREFIX='/porot'
+URL_PREFIX=''
 
 module Sinatra::Namespace
   module InstanceMethods
@@ -100,10 +100,19 @@ namespace URL_PREFIX do
 end
 
 helpers do
+  def link_text(action)
+    "#{URL_PREFIX}/#{action}"
+  end
+  def href(action)
+    "href=\"#{link_text(action)}\""
+  end
+
+  def link_to(text, action)
+    "<a #{href(action)}>#{text}</a>"
+  end
+
   def link_to_user(user)
-    f = <<-HTML
-<a href="#{URL_PREFIX}/#{user.username}">#{user.username}</a>
-    HTML
+    link_to(user.username, user.username)
   end
   
   def pluralize(singular, plural, count)

@@ -8,7 +8,7 @@
         <%= @posting_error %>
       </div>
     <% end %>
-    <form action="<%=URL_PREFIX%>/post" method="post">
+    <form action="<%=link_text("post")%>" method="post">
       <%= @logged_in_user.username %>, what's on your mind? <br />
       <textarea name="content" rows="3" columns="70"></textarea><br />
       <input type="submit" value="Update">
