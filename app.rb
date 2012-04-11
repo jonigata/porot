@@ -3,6 +3,24 @@ require 'rubygems'
 require 'sinatra'  
 require 'erb'
 require 'redis'
+require 'sinatra/namespace'
+
+URL_PREFIX='/porot'
+#URL_PREFIX=''
+
+module Sinatra::Namespace
+  module InstanceMethods
+    def to(uri, *args)
+      super("#{@namespace.pattern}#{uri}", *args)
+    end
+  end
+
+  module NamespacedMethods
+    def pattern
+      @pattern
+    end
+  end
+end
 
 require 'domain'
 require 'login-signup'
@@ -14,74 +32,76 @@ def redis
   $redis ||= Redis.new(:host => '127.0.0.1')
 end
 
-before do
-  keys = redis.keys("*")
-end
-
-get '/' do
-  @posts = @logged_in_user.timeline
-  erb :index
-end
-
-get '/:path.:ext' do |path, ext|
-  send_file '#{path}.#{ext}'
-end
-
-get '/timeline' do
-  @posts = Timeline.page(1)
-  erb :timeline
-end
-
-post '/post' do
-  if params[:content].length == 0
-    @posting_error = "You didn't enter anything."
-  elsif params[:content].length > 140
-    @posting_error = "Keep it to 140 characters please!"
+namespace URL_PREFIX do 
+  before do
+    keys = redis.keys("*")
   end
-  if @posting_error
+
+  get '/' do
     @posts = @logged_in_user.timeline
     erb :index
-  else
-    Post.create(@logged_in_user, params[:content])
-    redirect '/'
   end
-end
 
-get '/:follower/follow/:followee' do |follower_username, followee_username|
-  follower = User.find_by_username(follower_username)
-  followee = User.find_by_username(followee_username)
-  redirect '/' unless @logged_in_user == follower
-  follower.follow(followee)
-  redirect "/" + followee_username
-end
+  get '/:path.:ext' do |path, ext|
+    send_file '#{path}.#{ext}'
+  end
 
-get '/:follower/stopfollow/:followee' do |follower_username, followee_username|
-  follower = User.find_by_username(follower_username)
-  followee = User.find_by_username(followee_username)
-  redirect '/' unless @logged_in_user == follower
-  follower.stop_following(followee)
-  redirect "/" + followee_username
-end
+  get '/timeline' do
+    @posts = Timeline.page(1)
+    erb :timeline
+  end
 
-get '/:username' do |username|
-  @user = User.find_by_username(username)
-  
-  @posts = @user.posts
-  @followers = @user.followers
-  @followees = @user.followees
-  erb :profile
-end
+  post '/post' do
+    if params[:content].length == 0
+      @posting_error = "You didn't enter anything."
+    elsif params[:content].length > 140
+      @posting_error = "Keep it to 140 characters please!"
+    end
+    if @posting_error
+      @posts = @logged_in_user.timeline
+      erb :index
+    else
+      Post.create(@logged_in_user, params[:content])
+      redirect to('/')
+    end
+  end
 
-get '/:username/mentions' do |username|
-  @user = User.find_by_username(username)
-  @posts = @user.mentions
-  erb :mentions
+  get '/:follower/follow/:followee' do |follower_username, followee_username|
+    follower = User.find_by_username(follower_username)
+    followee = User.find_by_username(followee_username)
+    redirect to('/') unless @logged_in_user == follower
+    follower.follow(followee)
+    redirect to("/") + followee_username
+  end
+
+  get '/:follower/stopfollow/:followee' do |follower_username, followee_username|
+    follower = User.find_by_username(follower_username)
+    followee = User.find_by_username(followee_username)
+    redirect to('/') unless @logged_in_user == follower
+    follower.stop_following(followee)
+    redirect to("/") + followee_username
+  end
+
+  get '/:username' do |username|
+    @user = User.find_by_username(username)
+    
+    @posts = @user.posts
+    @followers = @user.followers
+    @followees = @user.followees
+    erb :profile
+  end
+
+  get '/:username/mentions' do |username|
+    @user = User.find_by_username(username)
+    @posts = @user.mentions
+    erb :mentions
+  end
 end
 
 helpers do
   def link_to_user(user)
     f = <<-HTML
-<a href="/#{user.username}">#{user.username}</a>
+<a href="#{URL_PREFIX}/#{user.username}">#{user.username}</a>
     HTML
   end
   
