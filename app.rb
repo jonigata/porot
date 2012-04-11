@@ -52,9 +52,10 @@ namespace URL_PREFIX do
   end
 
   post '/post' do
-    if params[:content].length == 0
+    len = params[:content].split(//u).length
+    if len == 0
       @posting_error = "You didn't enter anything."
-    elsif params[:content].length > 140
+    elsif len > 140
       @posting_error = "Keep it to 140 characters please!"
     end
     if @posting_error
