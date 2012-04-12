@@ -159,14 +159,37 @@ end
   
 class Post < Model
   def self.create(user, content)
-    content.gsub!(/[　\s\t]/u, ' ')
-    $stderr.puts content
+    create_post(user, content, nil, nil)
+  end
+
+  def self.retweet(user, source_id)
+    source = Post.new(source_id)
+    create_post(user, source.content, source.original_id, source.created_at)
+  end
+
+  property :content
+  property :user_id
+  property :created_at
+  property :original_id
+  
+  def created_at
+    Time.parse(_created_at)
+  end
+  
+  def user
+    User.new(user_id)
+  end
+
+  private
+  def self.create_post(user, content, original_id, created_at)
+    normalize(content)
 
     post_id = redis.incr("post:uid")
     post = Post.new(post_id)
     post.content = content
+    post.original_id = original_id || post_id
     post.user_id = user.id
-    post.created_at = Time.now.to_s
+    post.created_at = created_at || Time.now.to_s
     post.user.add_post(post)
     redis.lpush("timeline", post_id)
     post.user.followers.each do |follower|
@@ -181,16 +204,9 @@ class Post < Model
       redis.lpush("hashtag:#{$1}", post_id)
     end
   end
-  
-  property :content
-  property :user_id
-  property :created_at
-  
-  def created_at
-    Time.parse(_created_at)
+
+  def self.normalize(content)
+    content.gsub!(/[　\s\t]/u, ' ')
   end
   
-  def user
-    User.new(user_id)
-  end
 end

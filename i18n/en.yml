@@ -21,6 +21,10 @@ site:
   posts_from_all_users: Posts from  all useres.
   timeline_prefix: "Timeline of: "
   timeline_suffix: ""
+  hashtag_prefix: "Hash tag: "
+  hashtag_suffix: ""  
+  perform_retweet: "do RT"
+  cancel_retweet: "cancel RT"
   new_users: New users
 time:
   just_now: " just now"

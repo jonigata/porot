@@ -23,6 +23,10 @@ site:
   timeline_suffix: "のタイムライン"
   hashtag_prefix: "ハッシュタグ "
   hashtag_suffix: ""  
+  perform_retweet: RTする
+  cancel_retweet: やっぱりやめる
+  retweet_prefix: ""
+  retweet_suffix: "がリツイート"
   new_users: 新しいユーザ
 time:
   just_now: 今さっき

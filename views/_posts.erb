@@ -2,10 +2,16 @@
 <div id="posts" class="span-15">
   <% posts.each do |post| %>
     <div class="post">
-      <strong><%= link_to_user(post.user) %></strong>
+      <strong><%= link_to_user(author(post)) %></strong>
       <%= display_post(post) %>
       <div class="date">
         <%= time_ago_in_words(post.created_at) %>
+		<% if post.original_id != post.id %>
+		  <%= "#{t.site.retweet_prefix}#{username(post.user)}#{t.site.retweet_suffix}" %>
+		<% end %>
+		<span id="rt<%=post.id%>">
+		  <a href='javascript:void(0)' onclick='queryRetweet("rt<%=post.id%>"); return false;'>RT</a>
+		</span>
       </div>
     </div>
   <% end %>

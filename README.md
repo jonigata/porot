@@ -1,8 +1,16 @@
 porot
 =====
 
-An example Twitter application fork from retwis-rb
-see https://github.com/danlucraft/retwis-rb
+An example Twitter application fork from retwis-rb.
+See https://github.com/danlucraft/retwis-rb.
+
+ * Probably fast (because of Redis backend)
+ * Mention support
+ * Hashtag support
+ * Retweet support
+ * You can custom top-level menu (By default, home menu shows not one's followers but all members, because this project is focused on local network)
+ * You can make own language file (ja/en files are already exist)
+ * Almost all designs are by css (no image files used now)
 
 Starting Application
 --------------------
@@ -15,7 +23,7 @@ Follow instruction of retwis-rb after install some gems.
 Major modification from retwis-rb
 ---------------------------------
 
- * use public redis binding instead of rubyredis.rb
+ * Use public redis binding instead of rubyredis.rb.
 
 Requirements
 ------------

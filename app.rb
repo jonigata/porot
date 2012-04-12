@@ -84,12 +84,20 @@ namespace URL_PREFIX do
     render_hashtag(hashtag, page.to_i)
   end
 
+  get '/retweet/:postid/' do |postid|
+    retweet('', postid)
+  end
+
+  get '/retweet/:postid/*' do |postid|
+    retweet(after, postid)
+  end
+
   post '/post/' do
     post_status('', params[:content])
   end
 
   post '/post/*' do |after|
-    post_status("#{after}", params[:content])
+    post_status(after, params[:content])
   end
 
   get '/follow/:follower/:followee' do |follower_username, followee_username|
@@ -141,8 +149,7 @@ helpers do
       else
         mention
       end
-    end
-    post.content.gsub(/[#＃](\w+)/u) do |hashtag|
+    end.gsub(/[#＃](\w+)/u) do |hashtag|
       link_to(hashtag, "hashtag/#{$1}/")
     end
   end
@@ -237,6 +244,11 @@ helpers do
     end
   end
 
+  def retweet(current, postid)
+    Post.retweet(@logged_in_user, postid)
+    redirect to("#{current}")
+  end
+
   def generate_personal_menu_item(item)
     case item.intern
     when :home      then link_to('home', '')
@@ -250,8 +262,9 @@ helpers do
 
   #attr_reader :logged_in_user, :target_user, :posting_error, :page
 
-  def username
-    "#{t.site.name_prefix}#{@logged_in_user.username}#{t.site.name_suffix}"
+  def username(user = nil)
+    user ||= @logged_in_user
+    "#{t.site.name_prefix}#{user.username}#{t.site.name_suffix}"
   end
 
   def get_world_posts(page)
@@ -264,5 +277,11 @@ helpers do
 
   def find_user(username)
     User.find_by_username(username)
+  end
+
+  def author(post)
+    p post.original_id, post.id
+    return post.user if post.original_id == post.id
+    return Post.new(post.original_id).user
   end
 end
