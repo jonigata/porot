@@ -8,7 +8,6 @@ require 'sinatra/r18n'
 
 require 'config'
 
-#URL_PREFIX='/porot'
 URL_PREFIX=config.url_prefix
 
 module Sinatra::Namespace
