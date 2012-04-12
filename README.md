@@ -8,7 +8,7 @@ See https://github.com/danlucraft/retwis-rb.
  * Mention support
  * Hashtag support
  * Retweet support
- * You can custom top-level menu (By default, home menu shows not one's followers but all members, because this project is focused on local network)
+ * You can custom top-level menu (By default, home menu shows not one's followees but all members, because this project is focused on local network)
  * You can make own language file (ja/en files are already exist)
  * Almost all designs are by css (no image files used now)
 
