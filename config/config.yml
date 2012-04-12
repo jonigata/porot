@@ -1,0 +1,18 @@
+foo: bar
+
+personal_menu: [home, timeline, mentions, profile, logout]
+
+arrangement:
+#  home: [post_form, world_timeline, new_users]
+  home:
+    maincol: [post_form, world_timeline]
+    rightcol: [new_users]
+  timeline:
+    maincol: [post_form, my_timeline]
+    rightcol: [follow]
+  mentions:
+    maincol: [mentions_timeline]
+  profile:
+    maincol: [target_posts]
+    rightcol: [follow]
+  logout: logout
