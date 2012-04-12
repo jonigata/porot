@@ -1,0 +1,3 @@
+  <h3><%= "#{t.site.profile_prefix}#{t.site.name_prefix}#{target_user.username}#{t.site.name_suffix}#{t.site.profile_suffix}" %></h3>
+  
+  <%= erb :_posts, :locals => {:page => page, :posts => target_user.posts(page), :older_link => "#{current}#{page+1}"} %>
