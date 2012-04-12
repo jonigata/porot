@@ -81,21 +81,21 @@ class User < Model
   property :hashed_password
   
   def posts(page=1)
-    from, to = (page-1)*10, page*10
+    from, to = (page-1)*10, page*10-1
     redis.lrange("user:id:#{id}:posts", from, to).map do |post_id|
       Post.new(post_id)
     end
   end
   
   def timeline(page=1)
-    from, to = (page-1)*10, page*10
+    from, to = (page-1)*10, page*10-1
     redis.lrange("user:id:#{id}:timeline", from, to).map do |post_id|
       Post.new(post_id)
     end
   end
   
   def mentions(page=1)
-    from, to = (page-1)*10, page*10
+    from, to = (page-1)*10, page*10-1
     redis.lrange("user:id:#{id}:mentions", from, to).map do |post_id|
       Post.new(post_id)
     end

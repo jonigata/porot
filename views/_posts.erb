@@ -1,6 +1,6 @@
 
 <div id="posts" class="span-15">
-  <% @posts.each do |post| %>
+  <% posts.each do |post| %>
     <div class="post">
       <strong><%= link_to_user(post.user) %></strong>
       <%= display_post(post) %>
@@ -9,9 +9,9 @@
       </div>
     </div>
   <% end %>
-  <% if @posts.empty? %>
+  <% if posts.empty? %>
     <%= t.site.no_posts %>
   <% else %>
-    <%= link_to("<i>#{t.site.older} >></i>","timeline/#{@page+1}") %>
+    <%= link_to("<i>#{t.site.older} >></i>", older_link) %>
   <% end %>
 </div>

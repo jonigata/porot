@@ -15,8 +15,12 @@ site:
   older: older
   mentions_prefix: "Mentions of: "
   mentions_suffix: ""
+  profile_prefix: "Old posts of: "
+  profile_suffix: ""
   no_posts: No posts.
-  post_from_all_users: Posts from  all useres.
+  posts_from_all_users: Posts from  all useres.
+  timeline_prefix: "Timeline of: "
+  timeline_suffix: ""
   new_users: New users
 time:
   just_now: " just now"

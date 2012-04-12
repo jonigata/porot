@@ -15,8 +15,12 @@ site:
   older: もっと昔の発言
   mentions_prefix: ""
   mentions_suffix: "宛の発言"
+  profile_prefix: ""
+  profile_suffix: "の過去の発言"
   no_posts: 該当する発言はありません
   posts_from_all_users: 全員の発言
+  timeline_prefix: ""
+  timeline_suffix: "のタイムライン"
   new_users: 新しいユーザ
 time:
   just_now: 今さっき

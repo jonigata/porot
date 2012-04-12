@@ -25,6 +25,7 @@ end
 
 require 'domain'
 require 'login-signup'
+require 'config'
 
 set :sessions, true
 set :public_folder, File.dirname(__FILE__) + '/public'
@@ -39,35 +40,60 @@ namespace URL_PREFIX do
   end
 
   get '/' do
-    draw_index
+    render_home(1)
+  end
+
+  get %r{/([0-9]+)} do
+    render_home(params[:captures].first.to_i)
   end
 
   get '/:path.:ext' do |path, ext|
     send_file '#{path}.#{ext}'
   end
 
-  get '/timeline/:page' do |page|
-    @page = page.to_i
-    @posts = Timeline.page(@page)
-    erb :timeline
+  get '/timeline' do |page|
+    render_timeline(1)
   end
 
-  post '/post' do
+  get '/timeline/:page' do |page|
+    render_timeline(page.to_i)
+  end
+
+  get '/profile/:username' do |username|
+    render_profile(username, 1)
+  end
+
+  get '/profile/:username/:page' do |username, page|
+    render_profile(username, page.to_i)
+  end
+
+  get '/mentions/:username' do |username|
+    render_mentions(username, 1)
+  end
+
+  get '/mentions/:username/:page' do |username, page|
+    render_mentions(username, page.to_i)
+  end
+
+  post '/post' do 
     len = params[:content].split(//u).length
     if len == 0
-      @posting_error = "You didn't enter anything."
+      posting_error = "You didn't enter anything."
     elsif len > 140
-      @posting_error = "Keep it to 140 characters please!"
+      posting_error = "Keep it to 140 characters please!"
     end
-    if @posting_error
-      draw_index
+    if posting_error
+      render_body("/post",
+                  config.arrangement.home,
+                  :page => 1,
+                  :posting_error => posting_error) 
     else
       Post.create(@logged_in_user, params[:content])
       redirect to('/')
     end
   end
 
-  get '/:follower/follow/:followee' do |follower_username, followee_username|
+  get '/follow/:follower/:followee' do |follower_username, followee_username|
     follower = User.find_by_username(follower_username)
     followee = User.find_by_username(followee_username)
     redirect to('/') unless @logged_in_user == follower
@@ -75,7 +101,7 @@ namespace URL_PREFIX do
     redirect to("/") + followee_username
   end
 
-  get '/:follower/stopfollow/:followee' do |follower_username, followee_username|
+  get '/stopfollow/:follower/:followee' do |follower_username, followee_username|
     follower = User.find_by_username(follower_username)
     followee = User.find_by_username(followee_username)
     redirect to('/') unless @logged_in_user == follower
@@ -83,20 +109,6 @@ namespace URL_PREFIX do
     redirect to("/") + followee_username
   end
 
-  get '/:username' do |username|
-    @user = User.find_by_username(username)
-    
-    @posts = @user.posts
-    @followers = @user.followers
-    @followees = @user.followees
-    erb :profile
-  end
-
-  get '/:username/mentions' do |username|
-    @user = User.find_by_username(username)
-    @posts = @user.mentions
-    erb :mentions
-  end
 end
 
 helpers do
@@ -112,7 +124,7 @@ helpers do
   end
 
   def link_to_user(user)
-    link_to(user.username, user.username)
+    link_to(user.username, "profile/#{user.username}")
   end
   
   def pluralize(singular, plural, count)
@@ -148,7 +160,7 @@ helpers do
     when 2..45
       return distance_in_minutes.round.to_s + t.time.minutes_ago
     when 46..89
-      return t.tie.about_an_hour_ago
+      return t.time.about_an_hour_ago
     when 90..1439        
       return (distance_in_minutes/60).round.to_s + t.time.hours_ago
     when 1440..2879
@@ -166,10 +178,68 @@ helpers do
     end
   end
 
-  def draw_index
+  def render_home(page)
+    render_body('', config.arrangement.home, :page => page)
+  end
+
+
+  def render_timeline(page)
+    render_body('timeline/', config.arrangement.timeline, :target_user => @logged_in_user, :page => page)
+  end
+
+  def render_profile(username, page)
+    render_body("profile/#{username}/", config.arrangement.profile, :target_user => find_user(username), :page => page)
+  end
+
+  def render_mentions(username, page)
+    render_body("mentions/#{username}/", config.arrangement.mentions, :target_user => find_user(username), :page => page)
+  end    
+
+  def render_body(current, set, append_locals = {})
+=begin
     @posts = @logged_in_user.timeline
     @followers = @logged_in_user.followers
     @followees = @logged_in_user.followees
-    erb :index
+=end
+    locals = {
+      :current => current,
+      :logged_in_user => @logged_in_user, 
+      :posting_error => nil,
+    }.merge!(append_locals)
+    
+    callbacks = {
+      :callback => lambda do |section|
+        (set[section] || []).collect do |elem|
+          erb elem.intern, :locals => locals
+        end.join('')
+      end
+    }
+
+    erb :base, :locals => locals.merge(callbacks)
+  end
+
+  def generate_personal_menu_item(item)
+    case item.intern
+    when :home      then link_to('home', '')
+    when :mentions  then link_to('mentions', "mentions/#{@logged_in_user.username}")
+    when :profile   then link_to_user(@logged_in_user)
+    when :timeline  then link_to('timeline', 'timeline')
+    when :logout    then link_to('logout', 'logout')
+    end
+    #config.arrangement[item]
+  end
+
+  #attr_reader :logged_in_user, :target_user, :posting_error, :page
+
+  def username
+    "#{t.site.name_prefix}#{@logged_in_user.username}#{t.site.name_suffix}"
+  end
+
+  def get_world_posts(page)
+    Timeline.page(page)
+  end
+
+  def find_user(username)
+    User.find_by_username(username)
   end
 end

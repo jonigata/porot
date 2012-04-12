@@ -17,13 +17,13 @@
 		  <p class="small"><%=t.site.subtitle%></p>
         </div>
           <div class="span-12 last right-align">
+            <br /><br />
             <% if @logged_in_user %>
-              <br /><br />
-			  <%= link_to('home', '') %> |
-			  <%= link_to('mentions', "#{@logged_in_user.username}/mentions") %> |
-              <%= link_to_user(@logged_in_user) %> | 
-			  <%= link_to('timeline', 'timeline/1') %> |
-			  <%= link_to('logout', 'logout') %>
+			  <%=
+			  config.personal_menu.map do |item|
+				generate_personal_menu_item(item)
+			  end.join(' | ')
+			  %>
             <% end %>
           </div>
         <hr />

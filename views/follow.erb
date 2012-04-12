@@ -1,11 +1,11 @@
 <div class="span-7 last" id="rightcol">
   <div class="span-7 box">
-    <h4><%= pluralize(t.site.follower_prefix, t.site.follower_prefix_plural, @followers.length) %></h4>
-    <%= erb :_user_list, :locals => {:users => @followers } %>
+    <h4><%= pluralize(t.site.follower_prefix, t.site.follower_prefix_plural, target_user.followers.length) %></h4>
+    <%= erb :_user_list, :locals => {:users => target_user.followers } %>
   </div>
   <div class="span-7 box">
-    <h4><%= pluralize(t.site.followee_prefix, t.site.followee_prefix_plural, @followees.length) %></h4>
-    <%= erb :_user_list, :locals => {:users => @followees } %>
+    <h4><%= pluralize(t.site.followee_prefix, t.site.followee_prefix_plural, target_user.followees.length) %></h4>
+    <%= erb :_user_list, :locals => {:users => target_user.followees } %>
   </div>
 </div>
 

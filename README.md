@@ -7,9 +7,10 @@ see https://github.com/danlucraft/retwis-rb
 Starting Application
 --------------------
 
-Follow instruction of retwis-rb after install ruby redis binding
+Follow instruction of retwis-rb after install some gems.
 
  * sudo gem install redis
+ * sudo gem install sinatra-r18n
 
 Major modification from retwis-rb
 ---------------------------------
