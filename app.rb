@@ -51,7 +51,7 @@ namespace URL_PREFIX do
     send_file '#{path}.#{ext}'
   end
 
-  get '/timeline' do |page|
+  get '/timeline/' do |page|
     render_timeline(1)
   end
 
@@ -59,7 +59,7 @@ namespace URL_PREFIX do
     render_timeline(page.to_i)
   end
 
-  get '/profile/:username' do |username|
+  get '/profile/:username/' do |username|
     render_profile(username, 1)
   end
 
@@ -67,7 +67,7 @@ namespace URL_PREFIX do
     render_profile(username, page.to_i)
   end
 
-  get '/mentions/:username' do |username|
+  get '/mentions/:username/' do |username|
     render_mentions(username, 1)
   end
 
@@ -75,22 +75,12 @@ namespace URL_PREFIX do
     render_mentions(username, page.to_i)
   end
 
-  post '/post' do 
-    len = params[:content].split(//u).length
-    if len == 0
-      posting_error = "You didn't enter anything."
-    elsif len > 140
-      posting_error = "Keep it to 140 characters please!"
-    end
-    if posting_error
-      render_body("/post",
-                  config.arrangement.home,
-                  :page => 1,
-                  :posting_error => posting_error) 
-    else
-      Post.create(@logged_in_user, params[:content])
-      redirect to('/')
-    end
+  post '/post/' do
+    post_status('', params[:content])
+  end
+
+  post '/post/*' do |after|
+    post_status("#{after}", params[:content])
   end
 
   get '/follow/:follower/:followee' do |follower_username, followee_username|
@@ -124,7 +114,7 @@ helpers do
   end
 
   def link_to_user(user)
-    link_to(user.username, "profile/#{user.username}")
+    link_to(user.username, "profile/#{user.username}/")
   end
   
   def pluralize(singular, plural, count)
@@ -196,11 +186,6 @@ helpers do
   end    
 
   def render_body(current, set, append_locals = {})
-=begin
-    @posts = @logged_in_user.timeline
-    @followers = @logged_in_user.followers
-    @followees = @logged_in_user.followees
-=end
     locals = {
       :current => current,
       :logged_in_user => @logged_in_user, 
@@ -218,13 +203,31 @@ helpers do
     erb :base, :locals => locals.merge(callbacks)
   end
 
+  def post_status(current, content)
+    len = content.split(//u).length
+    if len == 0
+      posting_error = "You didn't enter anything."
+    elsif len > 140
+      posting_error = "Keep it to 140 characters please!"
+    end
+    if posting_error
+      render_body("/post",
+                  config.arrangement.home,
+                  :page => 1,
+                  :posting_error => posting_error) 
+    else
+      Post.create(@logged_in_user, content)
+      redirect to("#{current}")
+    end
+  end
+
   def generate_personal_menu_item(item)
     case item.intern
     when :home      then link_to('home', '')
-    when :mentions  then link_to('mentions', "mentions/#{@logged_in_user.username}")
+    when :mentions  then link_to('mentions', "mentions/#{@logged_in_user.username}/")
     when :profile   then link_to_user(@logged_in_user)
-    when :timeline  then link_to('timeline', 'timeline')
-    when :logout    then link_to('logout', 'logout')
+    when :timeline  then link_to('timeline', 'timeline/')
+    when :logout    then link_to('logout', 'logout/')
     end
     #config.arrangement[item]
   end

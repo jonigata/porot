@@ -9,7 +9,7 @@
     </div>
   <% end %>
   
-  <form action="login" method="post">
+  <form action="<%=link_text("login/")%>" method="post">
     <table>
       <tr>
         <td>username</td>
@@ -33,7 +33,7 @@
     </div>
   <% end %>
   
-  <form action="signup" method="post">
+  <form action="<%=link_text("signup/")%>" method="post">
     <table>
       <tr>
         <td>username</td>
