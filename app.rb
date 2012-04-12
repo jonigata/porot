@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 require 'rubygems'
 require 'sinatra'  
@@ -76,6 +77,14 @@ namespace URL_PREFIX do
     render_mentions(username, page.to_i)
   end
 
+  get '/hashtag/:hashtag/' do |hashtag|
+    render_hashtag(hashtag, 1)
+  end
+
+  get '/hashtag/:hashtag/:page' do |hashtag, page|
+    render_hashtag(hashtag, page.to_i)
+  end
+
   post '/post/' do
     post_status('', params[:content])
   end
@@ -134,6 +143,9 @@ helpers do
         mention
       end
     end
+    post.content.gsub(/[#＃](\w+)/u) do |hashtag|
+      link_to(hashtag, "hashtag/#{$1}/")
+    end
   end
 
   def time_ago_in_words(time)
@@ -184,6 +196,10 @@ helpers do
 
   def render_mentions(username, page)
     render_body("mentions/#{username}/", config.arrangement.mentions, :target_user => find_user(username), :page => page)
+  end    
+
+  def render_hashtag(hashtag, page)
+    render_body("hashtag/#{hashtag}/", config.arrangement.hashtag, :page => page, :hashtag => hashtag)
   end    
 
   def render_body(current, set, append_locals = {})
@@ -240,7 +256,11 @@ helpers do
   end
 
   def get_world_posts(page)
-    Timeline.page(page)
+    Timeline.new('timeline').page(page)
+  end
+
+  def get_hashtag_posts(hashtag, page)
+    Timeline.new("hashtag:#{hashtag}").page(page)
   end
 
   def find_user(username)

@@ -21,6 +21,8 @@ site:
   posts_from_all_users: 全員の発言
   timeline_prefix: ""
   timeline_suffix: "のタイムライン"
+  hashtag_prefix: "ハッシュタグ "
+  hashtag_suffix: ""  
   new_users: 新しいユーザ
 time:
   just_now: 今さっき

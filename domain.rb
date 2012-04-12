@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
 
 class Timeline
-  def self.page(page)
+  def initialize(key)
+    @key = key
+  end
+
+  def page(page)
     from      = (page-1)*10
     to        = (page)*10
-    post_ids = redis.lrange("timeline", from, to)
+    post_ids = redis.lrange(@key, from, to)
     post_ids.map {|post_id| Post.new(post_id)}
   end
 end
@@ -154,6 +159,9 @@ end
   
 class Post < Model
   def self.create(user, content)
+    content.gsub!(/[　\s\t]/u, ' ')
+    $stderr.puts content
+
     post_id = redis.incr("post:uid")
     post = Post.new(post_id)
     post.content = content
@@ -169,6 +177,9 @@ class Post < Model
         user.add_mention(post)
       end
     end
+    content.scan(/[#＃](\w+)/u).each do |hashtag|
+      redis.lpush("hashtag:#{$1}", post_id)
+    end
   end
   
   property :content
@@ -183,12 +194,3 @@ class Post < Model
     User.new(user_id)
   end
 end
-
-
-
-
-
-
-
-
-
