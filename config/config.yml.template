@@ -1,4 +1,4 @@
-foo: bar
+url_prefix:
 
 personal_menu: [home, timeline, mentions, profile, logout]
 

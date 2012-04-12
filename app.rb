@@ -6,8 +6,10 @@ require 'redis'
 require 'sinatra/namespace'
 require 'sinatra/r18n'
 
+require 'config'
+
 #URL_PREFIX='/porot'
-URL_PREFIX=''
+URL_PREFIX=config.url_prefix
 
 module Sinatra::Namespace
   module InstanceMethods
@@ -25,7 +27,6 @@ end
 
 require 'domain'
 require 'login-signup'
-require 'config'
 
 set :sessions, true
 set :public_folder, File.dirname(__FILE__) + '/public'
