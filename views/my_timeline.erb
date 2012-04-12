@@ -1,0 +1,3 @@
+  <h3><%= t.site.timeline_prefix %><%= username %><%= t.site.timeline_suffix %></h3>
+  
+  <%= erb :_posts, :locals => {:page => page, :posts => logged_in_user.posts(page), :older_link => "#{current}#{page+1}"} %>
