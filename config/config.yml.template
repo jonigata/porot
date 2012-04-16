@@ -1,4 +1,4 @@
-url_prefix:
+url_prefix: ''
 
 personal_menu: [home, timeline, mentions, profile, logout]
 
@@ -13,6 +13,6 @@ arrangement:
   mentions:
     maincol: [mentions_timeline]
   profile:
-    maincol: [target_posts]
+    maincol: [follow_operation, target_posts]
     rightcol: [follow]
   logout: logout

@@ -88,7 +88,7 @@ namespace URL_PREFIX do
     retweet('', postid)
   end
 
-  get '/retweet/:postid/*' do |postid|
+  get '/retweet/:postid/*' do |postid, after|
     retweet(after, postid)
   end
 
@@ -100,20 +100,20 @@ namespace URL_PREFIX do
     post_status(after, params[:content])
   end
 
-  get '/follow/:follower/:followee' do |follower_username, followee_username|
+  get '/follow/:follower/:followee/*' do |follower_username, followee_username, after|
     follower = User.find_by_username(follower_username)
     followee = User.find_by_username(followee_username)
     redirect to('/') unless @logged_in_user == follower
     follower.follow(followee)
-    redirect to("/") + followee_username
+    redirect to("#{after}")
   end
 
-  get '/stopfollow/:follower/:followee' do |follower_username, followee_username|
+  get '/stopfollow/:follower/:followee/*' do |follower_username, followee_username, after|
     follower = User.find_by_username(follower_username)
     followee = User.find_by_username(followee_username)
     redirect to('/') unless @logged_in_user == follower
     follower.stop_following(followee)
-    redirect to("/") + followee_username
+    redirect to("#{after}")
   end
 
 end

@@ -1,12 +1,2 @@
   <h3><%= "#{t.site.mentions_prefix}#{username}#{t.site.mentions_suffix}" %></h3>
-  <% if logged_in_user != target_user %>
-    <div class="box">  
-      <% if logged_in_user.following?(target_user) %>
-        <a <%=href("#{logged_in_user.username}/stopfollow/#{target_user.username}") %>>Stop following</a>
-      <% else %>
-        <a <%=href("#{logged_in_user.username}/follow/#{target_user.username}")%>>Follow</a>
-      <% end %>
-    </div>
-  <% end %>
-  
   <%= erb :_posts, :locals => { :page => page, :posts => target_user.mentions(page), :older_link => "#{current}#{page+1}" } %>
