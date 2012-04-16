@@ -1,0 +1,9 @@
+  <% if logged_in_user.id != target_user.id %>
+    <div class="box">  
+      <% if logged_in_user.following?(target_user) %>
+        <a <%=href("stopfollow/#{logged_in_user.username}/#{target_user.username}/#{current}") %>>Stop following</a>
+      <% else %>
+        <a <%=href("follow/#{logged_in_user.username}/#{target_user.username}/#{current}")%>>Follow</a>
+      <% end %>
+    </div>
+  <% end %>
