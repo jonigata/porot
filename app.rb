@@ -280,7 +280,6 @@ helpers do
   end
 
   def author(post)
-    p post.original_id, post.id
     return post.user if post.original_id == post.id
     return Post.new(post.original_id).user
   end
