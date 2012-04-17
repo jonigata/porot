@@ -12,9 +12,9 @@
       function showLength(str) {
         document.getElementById("inputLength").innerHTML = 140 - str.length;
       }
-	  function queryRetweet(id) {
+	  function queryRetweet(current, id) {
 	    id.match(/^rt([0-9]+)$/);
-	    document.getElementById(id).innerHTML = "<a href='<%= link_text("retweet/")%>"+RegExp.$1+"/'><%= t.site.perform_retweet %></a> <a href='javascript:void(0)' onclick='cancelRetweet(\""+id+"\"); return false;'><%= t.site.cancel_retweet %></a>";
+	    document.getElementById(id).innerHTML = "<a href='<%= link_text("retweet/")%>"+RegExp.$1+"/"+current+"'><%= t.site.perform_retweet %></a> <a href='javascript:void(0)' onclick='cancelRetweet(\""+id+"\"); return false;'><%= t.site.cancel_retweet %></a>";
 	  }
 	  function cancelRetweet(id) {
 	    document.getElementById(id).innerHTML = "<a href='javascript:void(0)' onclick='queryRetweet(\""+id+"\"); return false;'>RT</a>";

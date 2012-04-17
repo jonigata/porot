@@ -1,3 +1,3 @@
   <h3><%= "#{t.site.hashtag_prefix}\##{hashtag}#{t.site.hashtag_suffix}" %></h3>
   
-  <%= erb :_posts, :locals => {:page => page, :posts => get_hashtag_posts(hashtag, page), :older_link => "#{current}#{page+1}"} %>
+  <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_hashtag_posts(hashtag, page), :older_link => "#{current}#{page+1}"} %>

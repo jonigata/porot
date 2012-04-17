@@ -10,7 +10,7 @@
 		  <%= "#{t.site.retweet_prefix}#{username(post.user)}#{t.site.retweet_suffix}" %>
 		<% end %>
 		<span id="rt<%=post.id%>">
-		  <a href='javascript:void(0)' onclick='queryRetweet("rt<%=post.id%>"); return false;'>RT</a>
+		  <a href='javascript:void(0)' onclick='queryRetweet("<%=current%>", "rt<%=post.id%>"); return false;'>RT</a>
 		</span>
       </div>
     </div>

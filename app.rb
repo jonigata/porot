@@ -105,7 +105,7 @@ namespace URL_PREFIX do
     followee = User.find_by_username(followee_username)
     redirect to('/') unless @logged_in_user == follower
     follower.follow(followee)
-    redirect to("#{after}")
+    redirect to("/#{after}")
   end
 
   get '/stopfollow/:follower/:followee/*' do |follower_username, followee_username, after|
@@ -113,7 +113,7 @@ namespace URL_PREFIX do
     followee = User.find_by_username(followee_username)
     redirect to('/') unless @logged_in_user == follower
     follower.stop_following(followee)
-    redirect to("#{after}")
+    redirect to("/#{after}")
   end
 
 end
@@ -240,13 +240,13 @@ helpers do
                   :posting_error => posting_error) 
     else
       Post.create(@logged_in_user, content)
-      redirect to("#{current}")
+      redirect to("/#{current}")
     end
   end
 
   def retweet(current, postid)
     Post.retweet(@logged_in_user, postid)
-    redirect to("#{current}")
+    redirect to("/#{current}")
   end
 
   def generate_personal_menu_item(item)
