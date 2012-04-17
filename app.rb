@@ -151,6 +151,8 @@ helpers do
       end
     end.gsub(/[#＃](\w+)/u) do |hashtag|
       link_to(hashtag, "hashtag/#{$1}/")
+    end.gsub(URI.regexp) do |uri|
+      "<i><a href='#{uri}'>link</a></i>"
     end
   end
 
