@@ -9,8 +9,20 @@
 		<% if post.original_id != post.id %>
 		  <%= "#{t.site.retweet_prefix}#{username(post.user)}#{t.site.retweet_suffix}" %>
 		<% end %>
-		<span id="rt<%=post.id%>">
-		  <a href='javascript:void(0)' onclick='queryRetweet("<%=current%>", "rt<%=post.id%>"); return false;'>RT</a>
+		<span id="rt<%=post.id%>" style='display: inline;'>
+		  <a href='javascript:void(0)'
+		     onclick='setupElement("rt<%=post.id%>-2", "rt<%=post.id%>");'>
+			 RT
+		  </a>
+		</span>
+		<span id="rt<%=post.id%>-2" style='display: none;'>
+		  <a href='<%= link_text("retweet/#{post.id}/#{current}")%>'>
+		    <%= t.site.perform_retweet %>
+		  </a>
+		  <a href='javascript:void(0)'
+		     onclick='setupElement("rt<%=post.id%>", "rt<%=post.id%>-2");'>
+		    <%= t.site.cancel_retweet %>
+		  </a>
 		</span>
       </div>
     </div>

@@ -12,6 +12,17 @@
       function showLength(str) {
         document.getElementById("inputLength").innerHTML = 140 - str.length;
       }
+	  function showElement(id) {
+        document.getElementById(id).style.display = "inline";
+	  }
+	  function hideElement(id) {
+        document.getElementById(id).style.display = "none";
+	  }
+	  function setupElement(id1, id2) {
+	    showElement(id1); hideElement(id2); return false;
+	  }
+	  
+
 	  function queryRetweet(current, id) {
 	    id.match(/^rt([0-9]+)$/);
 	    document.getElementById(id).innerHTML = "<a href='<%= link_text("retweet/")%>"+RegExp.$1+"/"+current+"'><%= t.site.perform_retweet %></a> <a href='javascript:void(0)' onclick='cancelRetweet(\""+id+"\"); return false;'><%= t.site.cancel_retweet %></a>";
