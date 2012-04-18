@@ -2,7 +2,7 @@ site:
   title: porot
   subtitle: ""
   query: ", what's on your mind?"
-  link: "link>>"
+  link: ">>link"
   follower_prefix: follower
   follower_prefix_plural: followers
   follower_suffix: ""
@@ -27,6 +27,8 @@ site:
   hashtag_suffix: ""  
   perform_retweet: "do RT"
   cancel_retweet: "cancel RT"
+  retweet_prefix: ""
+  retweet_suffix: " retweets"
   new_users: New users
 time:
   just_now: " just now"
