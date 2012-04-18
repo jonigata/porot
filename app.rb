@@ -159,8 +159,8 @@ helpers do
     end
   end
   
-  def display_post(post)
-    post.content.gsub(/@\w+/) do |mention|
+  def display_post_content(content)
+    content.gsub(/@\w+/) do |mention|
       if user = User.find_by_username(mention[1..-1])
         "@" + link_to_user(user)
       else
@@ -177,6 +177,14 @@ helpers do
     HashTags.page(tagpage).map do |hashtag|
       link_to_hashtag(hashtag)
     end.join(' ')
+  end
+
+  def get_embeded_hashtags(content)
+    content.scan(/[#＃](\w+)/u)
+  end
+
+  def get_trend_hashtags
+    HashTags.page(1)[0...5]
   end
 
   def time_ago_in_words(time)

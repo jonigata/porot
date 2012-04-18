@@ -25,8 +25,13 @@ site:
   timeline_suffix: "のタイムライン"
   hashtag_prefix: "ハッシュタグ "
   hashtag_suffix: ""  
-  perform_retweet: RTする
+  start_retweet: RT
+  invoke_retweet: RTする
   cancel_retweet: やっぱりやめる
+  start_delete_hashtag: タグ削除
+  cancel_delete_hashtag: やっぱりやめる
+  start_add_hashtag: タグ追加
+  cancel_add_hashtag: やっぱりやめる
   retweet_prefix: ""
   retweet_suffix: "がリツイート"
   new_users: 新しいユーザ
