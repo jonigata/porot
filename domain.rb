@@ -13,6 +13,14 @@ class Timeline
   end
 end
 
+class HashTags
+  def self.page(page)
+    from      = (page-1)*10
+    to        = (page)*10
+    redis.lrange('hashtags', from, to)
+  end
+end    
+    
 class Model
   def initialize(id)
     @id = id
@@ -202,6 +210,7 @@ class Post < Model
     end
     content.scan(/[#＃](\w+)/u).each do |hashtag|
       redis.lpush("hashtag:#{$1}", post_id)
+      redis.lpush("hashtags", $1)
     end
   end
 

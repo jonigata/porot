@@ -2,6 +2,7 @@ site:
   title: ぽろっと！
   subtitle: 思いついたことをついぽろっと出してしまう場所です
   query: 、思いついたことを書いてね
+  link: "リンク>>"
   follower_prefix: フォロワー
   follower_prefix_plural: フォロワー
   follower_suffix: ""
@@ -13,6 +14,7 @@ site:
   name_prefix: ""
   name_suffix: さん
   older: もっと昔の発言
+  other_tags: その他のタグ
   mentions_prefix: ""
   mentions_suffix: "宛の発言"
   profile_prefix: ""

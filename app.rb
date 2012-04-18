@@ -76,12 +76,16 @@ namespace URL_PREFIX do
     render_mentions(username, page.to_i)
   end
 
-  get '/hashtag/:hashtag/' do |hashtag|
-    render_hashtag(hashtag, 1)
+  get '/hashtags/' do
+    render_hashtags(nil, 1, 1)
   end
 
-  get '/hashtag/:hashtag/:page' do |hashtag, page|
-    render_hashtag(hashtag, page.to_i)
+  get '/hashtags/:hashtag/' do |hashtag|
+    render_hashtags(hashtag, 1, 1)
+  end
+
+  get '/hashtags/:hashtag/:tagpage/:postpage' do |hashtag, tagpage, postpage|
+    render_hashtags(hashtag, tagpage.to_i, postpage.to_i)
   end
 
   get '/retweet/:postid/' do |postid|
@@ -150,10 +154,16 @@ helpers do
         mention
       end
     end.gsub(/[#＃](\w+)/u) do |hashtag|
-      link_to(hashtag, "hashtag/#{$1}/")
+      link_to(hashtag, "hashtags/#{$1}/")
     end.gsub(URI.regexp) do |uri|
       "<i><a href='#{uri}'>link</a></i>"
     end
+  end
+
+  def display_tagcloud(tagpage)
+    HashTags.page(tagpage).map do |hashtag|
+      link_to("\##{hashtag}", "hashtags/#{hashtag}/")
+    end.join(' ')
   end
 
   def time_ago_in_words(time)
@@ -206,8 +216,8 @@ helpers do
     render_body("mentions/#{username}/", config.arrangement.mentions, :target_user => find_user(username), :page => page)
   end    
 
-  def render_hashtag(hashtag, page)
-    render_body("hashtag/#{hashtag}/", config.arrangement.hashtag, :page => page, :hashtag => hashtag)
+  def render_hashtags(hashtag, tagpage, postpage)
+    render_body("hashtags/#{hashtag}/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :tagpage => tagpage, :hashtag => hashtag)
   end    
 
   def render_body(current, set, append_locals = {})
@@ -257,6 +267,7 @@ helpers do
     when :mentions  then link_to('mentions', "mentions/#{@logged_in_user.username}/")
     when :profile   then link_to_user(@logged_in_user)
     when :timeline  then link_to('timeline', 'timeline/')
+    when :hashtags  then link_to('hashtags', 'hashtags/')
     when :logout    then link_to('logout', 'logout/')
     end
     #config.arrangement[item]
