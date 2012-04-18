@@ -6,7 +6,7 @@ See https://github.com/danlucraft/retwis-rb.
 
  * Probably fast (because of Redis backend)
  * Mention support
- * Hashtag support
+ * Hashtag support (You can modify hashtags after posting, even if the post is not yours. This system basically trust the users.)
  * Retweet support
  * You can custom top-level menu (By default, home menu shows not one's followees but all members, because this project is focused on local network)
  * You can make own language file (ja/en files are already exist)

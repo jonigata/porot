@@ -203,6 +203,49 @@ class Post < Model
     User.new(user_id)
   end
 
+  def edit
+  end
+
+  def delete_hashtag(hashtag)
+    return if /^\w+$/ !~ hashtag
+    puts "delete_hashtag: #{hashtag}"
+
+    content_key = "post:id:#{self.id}:content"
+    hashtag_key = "hashtag:#{hashtag}"
+
+    while true
+      redis.watch content_key, hashtag_key
+      s = self.content
+      redis.multi
+      redis.zrem(hashtag_key, self.id)
+      s.gsub!(/\s*[#＃]#{hashtag}\s*/u, ' ')
+      self.content = s
+      if redis.exec then break; end
+    end
+  end
+
+  def add_hashtag(hashtag)
+    return if /^\w+$/ !~ hashtag
+    puts "add_hashtag: #{hashtag}"
+
+    content_key = "post:id:#{self.id}:content"
+    hashtag_key = "hashtag:#{hashtag}"
+
+    while true
+      redis.watch content_key, hashtag_key
+      s = self.content
+      if /[#＃]#{hashtag}/ =~ s then
+        redis.unwatch
+        break
+      end
+      redis.multi
+      redis.zadd(hashtag_key, self.created_at.to_i, self.id)
+      s += " \##{hashtag}"
+      self.content = s
+      if redis.exec then break; end
+    end
+  end
+
   private
   def self.create_post(user, content, original_id, created_at)
     normalize(content)

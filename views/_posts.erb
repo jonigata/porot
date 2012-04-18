@@ -37,7 +37,7 @@
 		</span>
 		<span id="dt<%=post.id%>-2" style='display: none;'>
 		  <% get_embeded_hashtags(content).each do |hashtag| %>
-  		    <a class='adddel_hashtag' href=''>
+		    <a class='adddel_hashtag' href='<%= link_text("delete_hashtag/#{post.id}/#{hashtag[0]}/#{current}")%>'>
 		      <span style="color: red">-</span> <%= hashtag %>
 		    </a>
 		  <% end %>
@@ -55,8 +55,8 @@
 		  </a>
 		</span>
 		<span id="at<%=post.id%>-2" style='display: none;'>
-		  <% get_trend_hashtags.each do |hashtag| %>
-  		    <a class='adddel_hashtag' href=''>
+		  <% get_trend_hashtags(content).each do |hashtag| %>
+		    <a class='adddel_hashtag' href='<%= link_text("add_hashtag/#{post.id}/#{hashtag}/#{current}")%>'>
 		      <span style="color: yellow">+</span> <%= hashtag %>
 		    </a>
 		  <% end %>

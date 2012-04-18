@@ -6,6 +6,7 @@ require 'erb'
 require 'redis'
 require 'sinatra/namespace'
 require 'sinatra/r18n'
+require 'cgi'
 
 require 'config'
 
@@ -104,6 +105,22 @@ namespace URL_PREFIX do
     retweet(after, postid)
   end
 
+  get '/delete_hashtag/:postid/:hashtag/' do |postid, hashtag|
+    delete_hashtag('', postid, hashtag)
+  end
+
+  get '/delete_hashtag/:postid/:hashtag/*' do |postid, hashtag, after|
+    delete_hashtag(after, postid, hashtag)
+  end
+
+  get '/add_hashtag/:postid/:hashtag/' do |postid, hashtag|
+    add_hashtag('', postid, hashtag)
+  end
+
+  get '/add_hashtag/:postid/:hashtag/*' do |postid, hashtag, after|
+    add_hashtag(after, postid, hashtag)
+  end
+
   post '/post/' do
     post_status('', params[:content])
   end
@@ -134,6 +151,7 @@ helpers do
   def link_text(action)
     "#{URL_PREFIX}/#{action}"
   end
+
   def href(action)
     "href=\"#{link_text(action)}\""
   end
@@ -183,8 +201,12 @@ helpers do
     content.scan(/[#＃](\w+)/u)
   end
 
-  def get_trend_hashtags
-    HashTags.page(1)[0...5]
+  def get_trend_hashtags(content)
+    a = HashTags.page(1)[0...5]
+    get_embeded_hashtags(content).each do |x|
+      a.delete(x[0])
+    end
+    a
   end
 
   def time_ago_in_words(time)
@@ -224,7 +246,6 @@ helpers do
     render_body('', config.arrangement.home, :page => page)
   end
 
-
   def render_timeline(page)
     render_body('timeline/', config.arrangement.timeline, :target_user => @logged_in_user, :page => page)
   end
@@ -244,7 +265,7 @@ helpers do
 
   def render_hashtag(hashtag, tagpage, postpage)
     # タグ指定
-    render_body("hashtag/#{hashtag}/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :hashtag => hashtag, :tagpage => tagpage, :other_tags => "hashtag/#{hashtag}/#{tagpage+1}/#{postpage}", :initial_text => "\##{hashtag} ")
+    render_body("hashtag/#{hashtag}/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :hashtag => hashtag, :tagpage => tagpage, :other_tags => "hashtag/#{hashtag}/#{tagpage+1}/#{postpage}", :initial_text => " \##{hashtag}")
   end    
 
   def render_body(current, set, append_locals = {})
@@ -289,6 +310,16 @@ helpers do
     redirect to("/#{current}")
   end
 
+  def delete_hashtag(current, postid, hashtag)
+    Post.new(postid).delete_hashtag(hashtag)
+    redirect to("/#{current}")
+  end
+
+  def add_hashtag(current, postid, hashtag)
+    Post.new(postid).add_hashtag(hashtag)
+    redirect to("/#{current}")
+  end
+
   def generate_personal_menu_item(item)
     case item.intern
     when :home      then link_to('home', '')
@@ -323,5 +354,9 @@ helpers do
   def author(post)
     return post.user if post.original_id == post.id
     return Post.new(post.original_id).user
+  end
+
+  def escape(s)
+    CGI.escape(s)
   end
 end

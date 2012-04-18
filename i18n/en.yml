@@ -25,8 +25,13 @@ site:
   timeline_suffix: ""
   hashtag_prefix: "Hash tag: "
   hashtag_suffix: ""  
-  perform_retweet: "do RT"
+  start_retweet: RT
+  invoke_retweet: "do RT"
   cancel_retweet: "cancel RT"
+  start_delete_hashtag: deltag
+  cancel_delete_hashtag: cancel
+  start_add_hashtag: addtag
+  cancel_add_hashtag: cancel
   retweet_prefix: ""
   retweet_suffix: " retweets"
   new_users: New users
