@@ -210,6 +210,8 @@ class Post < Model
     end
     content.scan(/[#＃](\w+)/u).each do |hashtag|
       redis.lpush("hashtag:#{$1}", post_id)
+
+      # ↓トランザクション的によくないが、タグの順序が狂うだけなのでママ
       redis.zadd("hashtags", redis.zcard("hashtags"), hashtag)
     end
   end
