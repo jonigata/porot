@@ -1,7 +1,7 @@
 porot
 =====
 
-An example Twitter application fork from retwis-rb.
+A Twitter-like Web Application forked from retwis-rb.
 See https://github.com/danlucraft/retwis-rb.
 
  * Probably fast (because of Redis backend)
