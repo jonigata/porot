@@ -8,8 +8,23 @@ class Timeline
   def page(page)
     from      = (page-1)*10
     to        = (page)*10
-    post_ids = redis.lrange(@key, from, to)
-    post_ids.map {|post_id| Post.new(post_id)}
+    redis.lrange(@key, from, to).map do |post_id|
+      Post.new(post_id)
+    end
+  end
+end
+
+class HashTag
+  def initialize(key)
+    @key = key
+  end
+
+  def page(page)
+    from      = (page-1)*10
+    to        = (page)*10
+    redis.zrevrange("hashtag:#{@key}", from, to).map do |post_id|
+      Post.new(post_id)
+    end
   end
 end
 
@@ -208,9 +223,10 @@ class Post < Model
         user.add_mention(post)
       end
     end
+    now = Time.new.to_i
     content.scan(/[#＃](\w+)/u).each do |hashtag|
-      redis.lpush("hashtag:#{$1}", post_id)
-      redis.zadd("hashtags", Time.now.to_i, hashtag)
+      redis.zadd("hashtag:#{$1}", now, post_id)
+      redis.zadd("hashtags", now, hashtag)
     end
   end
 

@@ -33,6 +33,12 @@ Requirements
  * Redis: http://code.google.com/p/redis/
  * Redis binding: sudo gem install redis
 
+Notice
+------
+
+If you are already using an older version (< 2012/04/18), do
+  * ruby migrate-20120418.rb
+
 License
 -------
 

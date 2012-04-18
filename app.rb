@@ -305,7 +305,7 @@ helpers do
   end
 
   def get_hashtag_posts(hashtag, page)
-    Timeline.new("hashtag:#{hashtag}").page(page)
+    HashTag.new(hashtag).page(page)
   end
 
   def find_user(username)
