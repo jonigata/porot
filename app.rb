@@ -231,7 +231,7 @@ helpers do
 
   def render_hashtag(hashtag, tagpage, postpage)
     # タグ指定
-    render_body("hashtag/#{hashtag}/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :hashtag => hashtag, :tagpage => tagpage, :other_tags => "hashtag/#{hashtag}/#{tagpage+1}/#{postpage}")
+    render_body("hashtag/#{hashtag}/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :hashtag => hashtag, :tagpage => tagpage, :other_tags => "hashtag/#{hashtag}/#{tagpage+1}/#{postpage}", :initial_text => "\##{hashtag} ")
   end    
 
   def render_body(current, set, append_locals = {})
@@ -239,6 +239,7 @@ helpers do
       :current => current,
       :logged_in_user => @logged_in_user, 
       :posting_error => nil,
+      :initial_text => "",
     }.merge!(append_locals)
     
     callbacks = {

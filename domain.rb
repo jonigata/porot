@@ -17,7 +17,7 @@ class HashTags
   def self.page(page)
     from      = (page-1)*10
     to        = (page)*10
-    redis.lrange('hashtags', from, to)
+    redis.zrevrange('hashtags', from, to)
   end
 end    
     
@@ -210,7 +210,7 @@ class Post < Model
     end
     content.scan(/[#＃](\w+)/u).each do |hashtag|
       redis.lpush("hashtag:#{$1}", post_id)
-      redis.lpush("hashtags", $1)
+      redis.zadd("hashtags", redis.zcard("hashtags"), hashtag)
     end
   end
 

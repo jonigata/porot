@@ -6,7 +6,7 @@
     <% end %>
     <form action="<%=link_text("post/#{current}")%>" method="post">
 	  <%= username %><%= t.site.query %> <br />
-      <textarea name="content" rows="3" columns="70" onkeyup="showLength(value);"></textarea><br />
+      <textarea name="content" rows="3" columns="70" onkeyup="showLength(value);"><%= initial_text %></textarea><br />
       <input id="tweet" type="submit" value="Post"> <span id="inputLength"></span>
     </form>
   </div>
