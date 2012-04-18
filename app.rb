@@ -77,15 +77,23 @@ namespace URL_PREFIX do
   end
 
   get '/hashtags/' do
-    render_hashtags(nil, 1, 1)
+    render_hashtags(1, 1)
   end
 
-  get '/hashtags/:hashtag/' do |hashtag|
-    render_hashtags(hashtag, 1, 1)
+  get '/hashtags/:tagpage' do |tagpage|
+    render_hashtags(tagpage.to_i, 1)
   end
 
-  get '/hashtags/:hashtag/:tagpage/:postpage' do |hashtag, tagpage, postpage|
-    render_hashtags(hashtag, tagpage.to_i, postpage.to_i)
+  get '/hashtag/:hashtag/' do |hashtag|
+    render_hashtag(hashtag, 1, 1)
+  end
+
+  get '/hashtag/:hashtag/:tagpage/' do |hashtag, tagpage|
+    render_hashtag(hashtag, tagpage.to_i, 1)
+  end
+
+  get '/hashtag/:hashtag/:tagpage/:postpage' do |hashtag, tagpage, postpage|
+    render_hashtag(hashtag, tagpage.to_i, postpage.to_i)
   end
 
   get '/retweet/:postid/' do |postid|
@@ -154,7 +162,7 @@ helpers do
         mention
       end
     end.gsub(/[#＃](\w+)/u) do |hashtag|
-      link_to(hashtag, "hashtags/#{$1}/")
+      link_to(hashtag, "hashtag/#{$1}/")
     end.gsub(URI.regexp) do |uri|
       "<i><a href='#{uri}'>link</a></i>"
     end
@@ -162,7 +170,7 @@ helpers do
 
   def display_tagcloud(tagpage)
     HashTags.page(tagpage).map do |hashtag|
-      link_to("\##{hashtag}", "hashtags/#{hashtag}/")
+      link_to("\##{hashtag}", "hashtag/#{hashtag}/")
     end.join(' ')
   end
 
@@ -216,8 +224,14 @@ helpers do
     render_body("mentions/#{username}/", config.arrangement.mentions, :target_user => find_user(username), :page => page)
   end    
 
-  def render_hashtags(hashtag, tagpage, postpage)
-    render_body("hashtags/#{hashtag}/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :tagpage => tagpage, :hashtag => hashtag)
+  def render_hashtags(tagpage, postpage)
+    # タグ未指定
+    render_body("hashtags/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :hashtag => nil, :tagpage => tagpage, :other_tags => "hashtags/#{tagpage+1}")
+  end    
+
+  def render_hashtag(hashtag, tagpage, postpage)
+    # タグ指定
+    render_body("hashtag/#{hashtag}/#{tagpage}/#{postpage}", config.arrangement.hashtags, :page => postpage, :hashtag => hashtag, :tagpage => tagpage, :other_tags => "hashtag/#{hashtag}/#{tagpage+1}/#{postpage}")
   end    
 
   def render_body(current, set, append_locals = {})

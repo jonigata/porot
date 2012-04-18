@@ -2,6 +2,7 @@ site:
   title: porot
   subtitle: ""
   query: ", what's on your mind?"
+  link: "link>>"
   follower_prefix: follower
   follower_prefix_plural: followers
   follower_suffix: ""
@@ -13,6 +14,7 @@ site:
   name_prefix: ""
   name_suffix: ""
   older: older
+  other_tags: others
   mentions_prefix: "Mentions of: "
   mentions_suffix: ""
   profile_prefix: "Old posts of: "
