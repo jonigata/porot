@@ -146,6 +146,11 @@ helpers do
     link_to(user.username, "profile/#{user.username}/")
   end
   
+  def link_to_hashtag(hashtag)
+    action = "hashtag/#{hashtag}/"
+    "<a class='hashtag' #{href(action)}>#{hashtag}</a>"
+  end
+  
   def pluralize(singular, plural, count)
     if count == 1
       count.to_s + " " + singular
@@ -162,7 +167,7 @@ helpers do
         mention
       end
     end.gsub(/[#＃](\w+)/u) do |hashtag|
-      link_to(hashtag, "hashtag/#{$1}/")
+      link_to_hashtag($1)
     end.gsub(URI.regexp) do |uri|
       "<i><a href='#{uri}'>link</a></i>"
     end
@@ -170,7 +175,7 @@ helpers do
 
   def display_tagcloud(tagpage)
     HashTags.page(tagpage).map do |hashtag|
-      link_to("\##{hashtag}", "hashtag/#{hashtag}/")
+      link_to_hashtag(hashtag)
     end.join(' ')
   end
 
