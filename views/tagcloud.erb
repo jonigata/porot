@@ -1,0 +1,10 @@
+  <div class="span-7 box">
+    <% if tagpage %>
+	  <% tags = display_tagcloud(tagpage) %>
+	  <%= tags %>
+	  <% if tags != '' && other_tags %>
+	    <br/>
+	    <%= link_to(t.site.other_tags, other_tags) %>
+	  <% end %>
+	<% end %>
+  </div>
