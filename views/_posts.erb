@@ -69,9 +69,11 @@
       </div>
     </div>
   <% end %>
-  <% if posts.empty? %>
-    <%= t.site.no_posts %>
-  <% else %>
-    <%= link_to("<i>#{t.site.older} >></i>", older_link) %>
+  <% if older_link %>
+    <% if posts.empty? %>
+      <%= t.site.no_posts %>
+    <% else %>
+      <%= link_to("<i>#{t.site.older} >></i>", older_link) %>
+    <% end %>
   <% end %>
 </div>
