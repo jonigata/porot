@@ -43,25 +43,25 @@ textarea {
   width: 500px;
 }
 
-#posts {
+.posts {
   margin: 10px;
   padding: 10px;
 }
 
-#posts .date {
+.posts .date {
   font-size: 75%;
   color: #999;
 }
 
-#posts .date :link {
+.posts .date :link {
   color: #77F;
 }
 
-#posts hr {
+.posts hr {
   margin: 0;
 }
 
-#posts .post {
+.posts .post {
   border-top: 1px dashed #DDD;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -71,7 +71,7 @@ textarea {
   list-style: none;
 }
 
-#posts .hashtag {
+.posts .hashtag {
   border-radius: 6px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -83,7 +83,7 @@ textarea {
   color: #FFFFFF;
 }
 
-#posts .date .adddel_hashtag {
+.posts .date .adddel_hashtag {
   margin-left: 6px;
   margin-right: 6px;
   border-radius: 6px;
@@ -97,11 +97,11 @@ textarea {
   color: #FFFFFF;
 }
 
-#posts .date .adddel_hashtag :link {
+.posts .date .adddel_hashtag :link {
   color: #FFFFFF;
 }
 
-#posts .date .adddel_hashtag :visited {
+.posts .date .adddel_hashtag :visited {
   color: #FFFFFF;
 }
 

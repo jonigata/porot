@@ -1,5 +1,7 @@
   <h3><%= "#{t.site.hashtag_prefix}#{link_to_hashtag(hashtag)}#{t.site.hashtag_suffix}" %></h3>
   
   <% if hashtag %>
-    <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_hashtag_posts(hashtag, page), :older_link => "#{current}#{page+1}"} %>
+    <div id="hashtag_timeline" class="posts span-15">
+      <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_hashtag_posts(hashtag, page), :older_link => "#{current}#{page+1}"} %>
+    </div>
   <% end %>

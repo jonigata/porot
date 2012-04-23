@@ -49,11 +49,11 @@ namespace URL_PREFIX do
     render_home(params[:captures].first.to_i)
   end
 
-  get '/:path.:ext' do |path, ext|
-    send_file '#{path}.#{ext}'
+  get %r{/(.*\.(js|css|png|gif))} do |path|
+    send_file File.join(settings.public_folder, path[0])
   end
 
-  get '/timeline/' do |page|
+  get '/timeline/' do
     render_timeline(1)
   end
 

@@ -1,5 +1,4 @@
 
-<div id="posts" class="span-15">
   <% posts.each do |post| %>
     <div class="post">
       <strong><%= link_to_user(author(post)) %></strong>
@@ -76,4 +75,3 @@
       <%= link_to("<i>#{t.site.older} >></i>", older_link) %>
     <% end %>
   <% end %>
-</div>

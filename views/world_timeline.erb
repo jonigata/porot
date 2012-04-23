@@ -1,3 +1,7 @@
   <h3><%= t.site.posts_from_all_users %></h3>
   
-  <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_world_posts(page), :older_link => "#{current}#{page+1}"} %>
+  <div id="world_timeline" class="posts span-15">
+    <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_hashtag_posts('sticky', page), :older_link => nil} %>
+
+    <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_world_posts(page), :older_link => "#{current}#{page+1}"} %>
+  </div>

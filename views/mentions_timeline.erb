@@ -1,2 +1,4 @@
   <h3><%= "#{t.site.mentions_prefix}#{username}#{t.site.mentions_suffix}" %></h3>
-  <%= erb :_posts, :locals => {:current => current,  :page => page, :posts => target_user.mentions(page), :older_link => "#{current}#{page+1}" } %>
+  <div id="mentions_timeline" class="posts span-15">
+    <%= erb :_posts, :locals => {:current => current,  :page => page, :posts => target_user.mentions(page), :older_link => "#{current}#{page+1}" } %>
+  </div>
