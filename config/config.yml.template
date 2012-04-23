@@ -1,6 +1,6 @@
 url_prefix: ''
 
-personal_menu: [home, timeline, mentions, profile, logout]
+personal_menu: [home, timeline, mentions, profile, hashtags, logout]
 
 arrangement:
 #  home: [post_form, world_timeline, new_users]
@@ -15,4 +15,7 @@ arrangement:
   profile:
     maincol: [follow_operation, target_posts]
     rightcol: [follow]
+  hashtags:
+    maincol: [post_form, hashtag_timeline]
+    rightcol: [tagcloud]
   logout: logout
