@@ -59,8 +59,9 @@ textarea {
   background-color: #F4A460;
   padding-left: 4px;
   padding-right: 4px;
+  vertical-align: top;
 
-  font-size: 85%;
+  font-size: 90%;
   color: #FFFFFF;
 }
 
@@ -94,8 +95,9 @@ textarea {
   background-color: #99CC33;
   padding-left: 4px;
   padding-right: 4px;
+  vertical-align: top;
 
-  font-size: 85%;
+  font-size: 90%;
   color: #FFFFFF;
 }
 
