@@ -5,19 +5,19 @@ page_size: 20
 personal_menu: [home, timeline, mentions, profile, hashtags, logout]
 
 arrangement:
-#  home: [post_form, world_timeline, new_users]
   home:
     maincol: [post_form, world_timeline]
-    rightcol: [new_users]
+    rightcol: [new_users, urge_reload]
   timeline:
     maincol: [post_form, my_timeline]
-    rightcol: [follow]
+    rightcol: [follow, urge_reload]
   mentions:
     maincol: [mentions_timeline]
+    rightcol: [urge_reload]
   profile:
     maincol: [biography, target_timeline]
-    rightcol: [follow]
+    rightcol: [follow, urge_reload]
   hashtags:
     maincol: [post_form, hashtag_timeline]
-    rightcol: [tagcloud]
+    rightcol: [tagcloud, urge_reload]
   logout: logout
