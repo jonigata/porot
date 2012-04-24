@@ -8,40 +8,78 @@
       <link rel="stylesheet" <%=href("css/ie.css")%> type="text/css" media="screen, projection">
     <![endif]-->
     <link rel="stylesheet" <%=href("css/custom.css")%> type="text/css" media="screen, projection"> 
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    
     <script type="text/javascript">
       function showLength(str) {
-        document.getElementById("inputLength").innerHTML = 140 - str.length;
+        $('#inputLength').html(140 - str.length);
       }
-	  function showElement(id) {
-        document.getElementById(id).style.display = "inline";
+      function showElement(id) {
+        $('#'+id).css({display: 'inline'})
+      }
+      function hideElement(id) {
+        $('#'+id).css({display: 'none'})
+      }
+      function setupElement(id1, id2) {
+        showElement(id1); hideElement(id2); return false;
+      }
+
+      var timer = 0;
+      var next_check = 10;
+      function resetNextCheck() {
+        next_check = 10;
+      }
+	  function doCheck() {
+	    // overloaded by _posts
 	  }
-	  function hideElement(id) {
-        document.getElementById(id).style.display = "none";
+      function doCheckInternal(url) {
+	    $.get(url, function(data) {
+          if (data == "changed") {
+  		    showUrgeReload();
+		  }
+		});
 	  }
-	  function setupElement(id1, id2) {
-	    showElement(id1); hideElement(id2); return false;
+
+	  function showUrgeReload() {
+	    $('#urge_reload').css({display: 'inline'});
 	  }
+
+      $(function() {
+        setInterval(function() {
+          timer++;
+          if (next_check <= timer) {
+			doCheck();
+			
+            timer = 0;
+            next_check *= 2;
+            if (1024 <= next_check) {
+              next_check = 1024;
+            }
+          }
+        }, 1000);
+      });   
     </script>
   </head>
 
   <!-- html body -->
-  <body>
+  <body onmouseover="resetNextCheck();">
     <div class="container">
       <!-- header -->
       <div id="header" class="span-24">
         <div class="span-12">
           <h1><%=t.site.title%></h1>
-          <p class="small"><%=t.site.subtitle%></p>
+          <p class="small"><%=t.site.subtitle%><span id="sample"></span></p>
         </div>
         <div class="span-12 last right-align">
-		  <br/><br/><br/>
-		  <% if logged_in_user %>
-			 <%=
-				config.personal_menu.map do |item|
-				  generate_personal_menu_item(item)
-				end.join(' | ')
-			 %>
-		  <% end %>
+          <br/><br/><br/>
+          <% if logged_in_user %>
+             <%=
+                config.personal_menu.map do |item|
+                  generate_personal_menu_item(item)
+                end.join(' | ')
+             %>
+          <% end %>
         </div>
         <hr />
       </div>

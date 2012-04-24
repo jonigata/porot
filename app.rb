@@ -42,16 +42,16 @@ namespace URL_PREFIX do
     keys = redis.keys("*")
   end
 
+  get %r{/(.*\.(js|css|png|gif))} do |path|
+    send_file File.join(settings.public_folder, path[0])
+  end
+
   get '/' do
     render_home(1)
   end
 
   get %r{/([0-9]+)} do
     render_home(params[:captures].first.to_i)
-  end
-
-  get %r{/(.*\.(js|css|png|gif))} do |path|
-    send_file File.join(settings.public_folder, path[0])
   end
 
   get '/timeline/' do
@@ -120,6 +120,26 @@ namespace URL_PREFIX do
 
   get '/add_hashtag/:postid/:hashtag/*' do |postid, hashtag, after|
     add_hashtag(after, postid, hashtag)
+  end
+
+  get '/peek/world/:postid' do |postid|
+    Timeline.new('timeline').latest.id != postid ? "changed" : ""
+  end
+
+  get '/peek/my/:postid' do |postid|
+    @logged_in_user.latest.id != postid ? "changed" : ""
+  end
+
+  get '/peek/mentions/:postid' do |postid|
+    @logged_in_user.latest_mention.id != postid ? "changed" : ""
+  end
+
+  get '/peek/target/:username/:postid' do |username, postid|
+    User.find_by_username(username).latest.id != postid ? "changed" : ""
+  end
+
+  get '/peek/hashtag/:hashtag/:postid' do |hashtag, postid|
+    HashTag.new(hashtag).latest.id != postid ? "changed" : ""
   end
 
   post '/post/' do

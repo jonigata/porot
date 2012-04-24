@@ -6,4 +6,10 @@
     </div>
 
     <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_world_posts(page), :older_link => "#{current}#{page+1}"} %>
+
+    <script type="text/javascript">
+	  function doCheck() {
+        doCheckInternal('<%= link_text("peek/world/#{Timeline.new('timeline').latest.id}") %>');
+	  }
+	</script>
   </div>

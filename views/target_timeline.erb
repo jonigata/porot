@@ -2,4 +2,10 @@
   
   <div id="target_timeline" class="posts span-15">
     <%= erb :_posts, :locals => {:current => current, :page => page, :posts => target_user.posts(page), :older_link => "#{current}#{page+1}"} %>
+
+    <script type="text/javascript">
+	  function doCheck() {
+        doCheckInternal('<%= link_text("peek/target/#{target_user.username}/#{target_user.latest.id}") %>');
+	  }
+	</script>
   </div>

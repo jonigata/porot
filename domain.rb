@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
 
+class ZeroId
+  def id
+    "0"
+  end
+end
+
+def zeroid
+  $zeroid ||= ZeroId.new
+end
+
 class Timeline
   def initialize(key)
     @key = key
@@ -11,6 +21,11 @@ class Timeline
     redis.lrange(@key, from, to).map do |post_id|
       Post.new(post_id)
     end
+  end
+
+  def latest
+    p = redis.lrange(@key, 0, 0)[0]
+    (p && Post.new(p)) || zeroid
   end
 end
 
@@ -25,6 +40,11 @@ class HashTag
     redis.zrevrange("hashtag:#{@key}", from, to).map do |post_id|
       Post.new(post_id)
     end
+  end
+
+  def latest
+    p = redis.zrevrange("hashtag:#{@key}", 0, 0)[0]
+    (p && Post.new(p)) || zeroid
   end
 end
 
@@ -123,6 +143,11 @@ class User < Model
     end
   end
   
+  def latest
+    p = redis.lrange("user:id:#{id}:timeline", 0, 0)[0]
+    (p && Post.new(p)) || zeroid
+  end
+
   def mentions(page=1)
     from, to = (page-1)*10, page*10-1
     redis.lrange("user:id:#{id}:mentions", from, to).map do |post_id|
@@ -130,6 +155,11 @@ class User < Model
     end
   end
   
+  def latest_mention
+    p = redis.lrange("user:id:#{id}:mentions", 0, 0)[0]
+    (p && Post.new(p)) || zeroid
+  end
+
   def add_post(post)
     redis.lpush("user:id:#{id}:posts", post.id)
     redis.lpush("user:id:#{id}:timeline", post.id)

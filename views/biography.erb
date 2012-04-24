@@ -1,7 +1,7 @@
   <div class="box">  
     <%= target_user.username %><br/>
     <%= t.site.mail_address %>:
-    <%= mail_address || t.site.not_registered %>
+    <%= target_user.mail_address || t.site.not_registered %>
 	<span id="register_mail_address" style="display: inline;">
 	  <a href='javascript:void(0)'
 	     onclick='setupElement("edit_mail_address", "register_mail_address");'>
