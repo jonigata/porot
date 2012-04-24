@@ -5,9 +5,9 @@ class Timeline
     @key = key
   end
 
-  def page(page)
-    from      = (page-1)*10
-    to        = (page)*10
+  def page(page_size, page)
+    from      = (page-1) * page_size
+    to        = (page) * page_size - 1
     redis.lrange(@key, from, to).map do |post_id|
       Post.new(post_id)
     end
@@ -19,9 +19,9 @@ class HashTag
     @key = key
   end
 
-  def page(page)
-    from      = (page-1)*10
-    to        = (page)*10
+  def page(page_size, page)
+    from      = (page-1) * page_size
+    to        = (page) * page_size - 1
     redis.zrevrange("hashtag:#{@key}", from, to).map do |post_id|
       Post.new(post_id)
     end
@@ -29,9 +29,9 @@ class HashTag
 end
 
 class HashTags
-  def self.page(page)
-    from      = (page-1)*10
-    to        = (page)*10
+  def self.page(page_size, page)
+    from      = (page-1) * page_size
+    to        = (page) * page_size - 1
     redis.zrevrange('hashtags', from, to)
   end
 end    

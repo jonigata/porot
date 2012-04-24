@@ -197,7 +197,7 @@ helpers do
   end
 
   def display_tagcloud(tagpage)
-    HashTags.page(tagpage).map do |hashtag|
+    HashTags.page(config.page_size, tagpage).map do |hashtag|
       link_to_hashtag(hashtag)
     end.join(' ')
   end
@@ -207,7 +207,7 @@ helpers do
   end
 
   def get_trend_hashtags(content)
-    a = HashTags.page(1)[0...5]
+    a = HashTags.page(config.page_size, 1)[0...5]
     get_embeded_hashtags(content).each do |x|
       a.delete(x[0])
     end
@@ -355,11 +355,11 @@ helpers do
   end
 
   def get_world_posts(page)
-    Timeline.new('timeline').page(page)
+    Timeline.new('timeline').page(config.page_size, page)
   end
 
   def get_hashtag_posts(hashtag, page)
-    HashTag.new(hashtag).page(page)
+    HashTag.new(hashtag).page(config.page_size, page)
   end
 
   def find_user(username)
