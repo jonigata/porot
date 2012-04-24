@@ -130,6 +130,6 @@ textarea {
 
 .avatar {
   clear: left;
-  padding-right: 8px;
+  width: 48px;
   float: left;
 }

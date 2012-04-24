@@ -1,71 +1,75 @@
 
   <% posts.each do |post| %>
     <div class="post">
-      <img src="http://www.gravatar.com/avatar/<%= gravator(post.user) %>?s=40&d=mm" alt="gravator" class="avatar"/>
-      <strong><%= link_to_user(author(post)) %></strong>
-	  <% content = post.content %>
-      <%= display_post_content(content) %>
-      <div class="date">
-        <%= time_ago_in_words(post.created_at) %>
-		<% if post.original_id != post.id %>
-		  <%= "#{t.site.retweet_prefix}#{username(post.user)}#{t.site.retweet_suffix}" %>
-		<% end %>
-
-		<!-- RT -->
-		<span id="rt<%=post.id%>" style='display: inline;'>
-		  <a href='javascript:void(0)'
-		     onclick='setupElement("rt<%=post.id%>-2", "rt<%=post.id%>");'>
-			 <%= t.site.start_retweet %>
-		  </a>
-		</span>
-		<span id="rt<%=post.id%>-2" style='display: none;'>
-		  <a href='<%= link_text("retweet/#{post.id}/#{current}")%>'>
-		    <%= t.site.invoke_retweet %>
-		  </a>
-		  <a href='javascript:void(0)'
-		     onclick='setupElement("rt<%=post.id%>", "rt<%=post.id%>-2");'>
-		    <%= t.site.cancel_retweet %>
-		  </a>
-		</span>
-
-		<!-- delete_hashtag -->
-		<span id="dt<%=post.id%>" style='display: inline;'>
-		  <a href='javascript:void(0)'
-		     onclick='setupElement("dt<%=post.id%>-2", "dt<%=post.id%>");'>
-			 <%= t.site.start_delete_hashtag %>
-		  </a>
-		</span>
-		<span id="dt<%=post.id%>-2" style='display: none;'>
-		  <% get_embeded_hashtags(content).each do |hashtag| %>
-		    <a class='adddel_hashtag' href='<%= link_text("delete_hashtag/#{post.id}/#{hashtag[0]}/#{current}")%>'>
-		      <span style="color: red">-</span> <%= hashtag %>
-		    </a>
+	  <div class="avatar">
+        <img src="http://www.gravatar.com/avatar/<%= gravator(post.user) %>?s=40&d=mm" alt="gravator"/>
+	  </div>
+      <div style="margin-left: 48px;">
+		<strong><%= link_to_user(author(post)) %></strong>
+		<% content = post.content %>
+		<%= display_post_content(content) %>
+		<div class="date">
+		  <%= time_ago_in_words(post.created_at) %>
+		  <% if post.original_id != post.id %>
+			<%= "#{t.site.retweet_prefix}#{username(post.user)}#{t.site.retweet_suffix}" %>
 		  <% end %>
-		  <a href='javascript:void(0)'
-		     onclick='setupElement("dt<%=post.id%>", "dt<%=post.id%>-2");'>
-		    <%= t.site.cancel_delete_hashtag %>
-		  </a>
-		</span>
 
-		<!-- add_hashtag -->
-		<span id="at<%=post.id%>" style='display: inline;'>
-		  <a href='javascript:void(0)'
-		     onclick='setupElement("at<%=post.id%>-2", "at<%=post.id%>");'>
-			 <%= t.site.start_add_hashtag %>
-		  </a>
-		</span>
-		<span id="at<%=post.id%>-2" style='display: none;'>
-		  <% get_trend_hashtags(content).each do |hashtag| %>
-		    <a class='adddel_hashtag' href='<%= link_text("add_hashtag/#{post.id}/#{hashtag}/#{current}")%>'>
-		      <span style="color: yellow">+</span> <%= hashtag %>
-		    </a>
-		  <% end %>
-		  <a href='javascript:void(0)'
-		     onclick='setupElement("at<%=post.id%>", "at<%=post.id%>-2");'>
-		    <%= t.site.cancel_add_hashtag %>
-		  </a>
-		</span>
-		
+		  <!-- RT -->
+		  <span id="rt<%=post.id%>" style='display: inline;'>
+			<a href='javascript:void(0)'
+			   onclick='setupElement("rt<%=post.id%>-2", "rt<%=post.id%>");'>
+			   <%= t.site.start_retweet %>
+			</a>
+		  </span>
+		  <span id="rt<%=post.id%>-2" style='display: none;'>
+			<a href='<%= link_text("retweet/#{post.id}/#{current}")%>'>
+			  <%= t.site.invoke_retweet %>
+			</a>
+			<a href='javascript:void(0)'
+			   onclick='setupElement("rt<%=post.id%>", "rt<%=post.id%>-2");'>
+			  <%= t.site.cancel_retweet %>
+			</a>
+		  </span>
+
+		  <!-- delete_hashtag -->
+		  <span id="dt<%=post.id%>" style='display: inline;'>
+			<a href='javascript:void(0)'
+			   onclick='setupElement("dt<%=post.id%>-2", "dt<%=post.id%>");'>
+			   <%= t.site.start_delete_hashtag %>
+			</a>
+		  </span>
+		  <span id="dt<%=post.id%>-2" style='display: none;'>
+			<% get_embeded_hashtags(content).each do |hashtag| %>
+			  <a class='adddel_hashtag' href='<%= link_text("delete_hashtag/#{post.id}/#{hashtag[0]}/#{current}")%>'>
+				<span style="color: red">-</span> <%= hashtag %>
+			  </a>
+			<% end %>
+			<a href='javascript:void(0)'
+			   onclick='setupElement("dt<%=post.id%>", "dt<%=post.id%>-2");'>
+			  <%= t.site.cancel_delete_hashtag %>
+			</a>
+		  </span>
+
+		  <!-- add_hashtag -->
+		  <span id="at<%=post.id%>" style='display: inline;'>
+			<a href='javascript:void(0)'
+			   onclick='setupElement("at<%=post.id%>-2", "at<%=post.id%>");'>
+			   <%= t.site.start_add_hashtag %>
+			</a>
+		  </span>
+		  <span id="at<%=post.id%>-2" style='display: none;'>
+			<% get_trend_hashtags(content).each do |hashtag| %>
+			  <a class='adddel_hashtag' href='<%= link_text("add_hashtag/#{post.id}/#{hashtag}/#{current}")%>'>
+				<span style="color: yellow">+</span> <%= hashtag %>
+			  </a>
+			<% end %>
+			<a href='javascript:void(0)'
+			   onclick='setupElement("at<%=post.id%>", "at<%=post.id%>-2");'>
+			  <%= t.site.cancel_add_hashtag %>
+			</a>
+		  </span>
+
+		</div>
       </div>
     </div>
   <% end %>
