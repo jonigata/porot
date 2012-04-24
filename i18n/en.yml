@@ -35,6 +35,10 @@ site:
   retweet_prefix: ""
   retweet_suffix: " retweets"
   new_users: New users
+  start_follow: Follow
+  stop_follow: Stop following
+  mail_address: mail address
+  not_registered: not registered
 time:
   just_now: " just now"
   less_than_a_minute_ago: "less than a minute ago"

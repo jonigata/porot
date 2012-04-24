@@ -1,6 +1,7 @@
 
   <% posts.each do |post| %>
     <div class="post">
+      <img src="http://www.gravatar.com/avatar/<%= gravator(post.user) %>?s=40&d=mm" alt="gravator" class="avatar"/>
       <strong><%= link_to_user(author(post)) %></strong>
 	  <% content = post.content %>
       <%= display_post_content(content) %>

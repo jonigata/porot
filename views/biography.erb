@@ -1,0 +1,25 @@
+  <div class="box">  
+    <%= target_user.username %><br/>
+    <%= t.site.mail_address %>:
+    <%= mail_address || t.site.not_registered %>
+	<span id="register_mail_address" style="display: inline;">
+	  <a href='javascript:void(0)'
+	     onclick='setupElement("edit_mail_address", "register_mail_address");'>
+        <%= t.site.register_or_modify_mail_address %>
+	  </a>
+	</span>
+	<span id="edit_mail_address" style="display: none;">
+	  <form action="<%= link_text("register_mail_address/#{current}") %>" method="post" style="display: inline;">
+	    <input type="text" name="mail_address" value="<%= mail_address %>">
+		<input type="submit" value="<%= t.site.register_mail_address %>">
+	  </form>
+	</span>
+	<br/>
+    <% if logged_in_user.id != target_user.id %>
+      <% if !logged_in_user.following?(target_user) %>
+        <a <%=href("follow/#{logged_in_user.username}/#{target_user.username}/#{current}")%>><%= t.site.start_follow %></a>
+      <% else %>
+        <a <%=href("stopfollow/#{logged_in_user.username}/#{target_user.username}/#{current}") %>><%= t.site.stop_follow %></a>
+      <% end %>
+    <% end %>
+  </div>

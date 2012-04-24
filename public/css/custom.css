@@ -123,3 +123,13 @@ textarea {
   color: #FFFFFF;
 }
 
+#register_mail_address {
+  font-size: 75%;
+  color: #999;
+}
+
+.avatar {
+  clear: left;
+  padding-right: 8px;
+  float: left;
+}

@@ -35,6 +35,12 @@ site:
   retweet_prefix: ""
   retweet_suffix: "がリツイート"
   new_users: 新しいユーザ
+  start_follow: フォローする
+  stop_follow: フォローをやめる
+  mail_address: メールアドレス
+  not_registered: 未登録
+  register_mail_address: 登録する
+  register_or_modify_mail_address: 登録/修正する
 time:
   just_now: 今さっき
   less_than_a_minute_ago: 1分くらい前

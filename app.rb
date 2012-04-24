@@ -7,6 +7,7 @@ require 'redis'
 require 'sinatra/namespace'
 require 'sinatra/r18n'
 require 'cgi'
+require 'digest/md5'
 
 require 'config'
 
@@ -127,6 +128,10 @@ namespace URL_PREFIX do
 
   post '/post/*' do |after|
     post_status(after, params[:content])
+  end
+
+  post '/register_mail_address/*' do |after|
+    register_mail_address(after, params[:mail_address])
   end
 
   get '/follow/:follower/:followee/*' do |follower_username, followee_username, after|
@@ -305,6 +310,11 @@ helpers do
     end
   end
 
+  def register_mail_address(current, mail_address)
+    @logged_in_user.mail_address = mail_address
+    redirect to("/#{current}")
+  end
+
   def retweet(current, postid)
     Post.retweet(@logged_in_user, postid)
     redirect to("/#{current}")
@@ -339,6 +349,11 @@ helpers do
     "#{t.site.name_prefix}#{user.username}#{t.site.name_suffix}"
   end
 
+  def mail_address(user = nil)
+    user ||= @logged_in_user
+    user.mail_address
+  end
+
   def get_world_posts(page)
     Timeline.new('timeline').page(page)
   end
@@ -354,6 +369,10 @@ helpers do
   def author(post)
     return post.user if post.original_id == post.id
     return Post.new(post.original_id).user
+  end
+
+  def gravator(user)
+    Digest::MD5.new.update((user.mail_address || "").downcase.strip)
   end
 
   def escape(s)

@@ -107,6 +107,7 @@ class User < Model
   property :username
   property :salt
   property :hashed_password
+  property :mail_address
   
   def posts(page=1)
     from, to = (page-1)*10, page*10-1
