@@ -2,7 +2,7 @@
   <% posts.each do |post| %>
     <div class="post">
 	  <div class="avatar">
-        <img src="http://www.gravatar.com/avatar/<%= gravator(post.user) %>?s=40&d=mm" alt="gravator"/>
+        <img src="http://www.gravatar.com/avatar/<%= gravator(author(post)) %>?s=40&d=mm" alt="gravator"/>
 	  </div>
       <div style="margin-left: 48px;">
 		<strong><%= link_to_user(author(post)) %></strong>
