@@ -74,6 +74,16 @@ textarea {
   color: #77F;
 }
 
+.posts .date input {
+  font-size: 75%;
+  color: #77F;
+  margin-left: 8px;
+  padding: 0px;
+  width: 100px;
+  border-width: 1;
+  border-color: #77f;
+}
+
 .posts hr {
   margin: 0;
 }

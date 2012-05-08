@@ -32,6 +32,7 @@ site:
   cancel_delete_hashtag: やっぱりやめる
   start_add_hashtag: タグ追加
   cancel_add_hashtag: やっぱりやめる
+  advice_new_hashtag: "入力したら'+'を押す"
   retweet_prefix: ""
   retweet_suffix: "がリツイート"
   new_users: 新しいユーザ

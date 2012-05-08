@@ -25,6 +25,12 @@
         showElement(id1); hideElement(id2); return false;
       }
 
+	  function clearDefaultValue(e, s) {
+	    if (e.value == s) {
+		  e.value = '';
+		}
+	  }
+
       var timer = 0;
       var next_check = 10;
       function resetNextCheck() {

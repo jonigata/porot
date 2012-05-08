@@ -32,6 +32,7 @@ site:
   cancel_delete_hashtag: cancel
   start_add_hashtag: addtag
   cancel_add_hashtag: cancel
+  advice_new_hashtag: "click '+' after input"
   retweet_prefix: ""
   retweet_suffix: " retweets"
   new_users: New users

@@ -63,8 +63,15 @@
 				<span style="color: yellow">+</span> <%= hashtag %>
 			  </a>
 			<% end %>
+			<input id="ct<%=post.id%>"
+				   type="text"
+				   value="<%= t.site.advice_new_hashtag %>"
+				   onfocus='clearDefaultValue(this, "<%= t.site.advice_new_hashtag.gsub(/'/, '&#x27;') %>");'>
 			<a href='javascript:void(0)'
-			   onclick='setupElement("at<%=post.id%>", "at<%=post.id%>-2");'>
+			   onclick='location.href="<%= link_text("add_hashtag/#{post.id}/") %>" + $("#ct<%=post.id%>").val() + "/<%= current %>"'>+</a>
+			<a href='javascript:void(0)'
+			   onclick='setupElement("at<%=post.id%>", "at<%=post.id%>-2");'
+			   style="margin-left: 4px;">
 			  <%= t.site.cancel_add_hashtag %>
 			</a>
 		  </span>

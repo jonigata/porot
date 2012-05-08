@@ -271,6 +271,7 @@ class Post < Model
       end
       redis.multi
       redis.zadd(hashtag_key, self.created_at.to_i, self.id)
+      redis.zadd("hashtags", Time.now.to_i, hashtag)
       s += " \##{hashtag}"
       self.content = s
       if redis.exec then break; end
