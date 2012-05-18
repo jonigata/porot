@@ -148,7 +148,7 @@ class User < Model
     redis.lrange("user:id:#{id}:timeline", 0, -1).map do |post_id|
       post = Post.new(post_id)
       t = post.created_at
-      b <= t && t < e ? post.content : nil
+      b <= t && t < e ? [post.created_at, post.content] : nil
     end.compact
   end
 
