@@ -142,6 +142,25 @@ class User < Model
       Post.new(post_id)
     end
   end
+
+  def archive(b, e)
+    # 効率悪い
+    redis.lrange("user:id:#{id}:timeline", 0, -1).map do |post_id|
+      post = Post.new(post_id)
+      t = post.created_at
+      b <= t && t < e ? post.content : nil
+    end.compact
+  end
+
+  def first_date
+    r = redis.lrange("user:id:#{id}:timeline", -1, -1)
+    r.empty? ? nil : Post.new(r[0]).created_at
+  end
+
+  def last_date
+    r = redis.lrange("user:id:#{id}:timeline", 0, 0)
+    r.empty? ? nil : Post.new(r[0]).created_at
+  end
   
   def latest
     p = redis.lrange("user:id:#{id}:timeline", 0, 0)[0]

@@ -40,7 +40,7 @@ end
 
 namespace URL_PREFIX do 
   before do
-    keys = redis.keys("*")
+    # keys = redis.keys("*")
   end
 
   get %r{/(.*\.(js|css|png|gif))} do |path|
@@ -145,12 +145,20 @@ namespace URL_PREFIX do
 
   get '/archive/:username/:date_begin/:date_end/' do |username, date_begin, date_end|
     date_format = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
-    date_format =~ period_end or return "bad period_begin"
+    date_format =~ date_begin or return "bad date_begin"
     date_begin_time = Time.local($1.to_i, $2.to_i, $3.to_i)
-    date_format =~ period_end or return "bad period_end"
+    date_format =~ date_end or return "bad date_end"
     date_end_time = Time.local($1.to_i, $2.to_i, $3.to_i)
     JSONP User.find_by_username(username).archive(
       date_begin_time, date_end_time)
+  end
+
+  get '/first_date/:username/' do |username|
+    JSONP User.find_by_username(username).first_date
+  end
+
+  get '/last_date/:username/' do |username|
+    JSONP User.find_by_username(username).last_date
   end
 
   post '/post/' do
