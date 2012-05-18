@@ -6,6 +6,7 @@ require 'erb'
 require 'redis'
 require 'sinatra/namespace'
 require 'sinatra/r18n'
+require 'sinatra/jsonp'
 require 'cgi'
 require 'digest/md5'
 
@@ -142,6 +143,16 @@ namespace URL_PREFIX do
     HashTag.new(hashtag).latest.id != postid ? "changed" : ""
   end
 
+  get '/archive/:username/:date_begin/:date_end/' do |username, date_begin, date_end|
+    date_format = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
+    date_format =~ period_end or return "bad period_begin"
+    date_begin_time = Time.local($1.to_i, $2.to_i, $3.to_i)
+    date_format =~ period_end or return "bad period_end"
+    date_end_time = Time.local($1.to_i, $2.to_i, $3.to_i)
+    JSONP User.find_by_username(username).archive(
+      date_begin_time, date_end_time)
+  end
+
   post '/post/' do
     post_status('', params[:content])
   end
@@ -172,6 +183,7 @@ namespace URL_PREFIX do
 
 end
 
+helpers Sinatra::Jsonp
 helpers do
   def link_text(action)
     "#{URL_PREFIX}/#{action}"
