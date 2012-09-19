@@ -43,7 +43,7 @@ namespace URL_PREFIX do
     # keys = redis.keys("*")
   end
 
-  get %r{/(.*\.(js|css|png|gif))} do |path|
+  get %r{#{URL_PREFIX}/(.*\.(js|css|png|gif))} do |path|
     send_file File.join(settings.public_folder, path[0])
   end
 
