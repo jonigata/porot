@@ -109,6 +109,12 @@ class User < Model
     User.new(user_id)
   end
   
+  def self.all_users
+    redis.lrange("users", 0, -1).map do |user_id|
+      User.new(user_id)
+    end
+  end
+
   def self.new_users
     redis.lrange("users", 0, 10).map do |user_id|
       User.new(user_id)

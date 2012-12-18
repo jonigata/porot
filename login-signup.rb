@@ -1,8 +1,13 @@
 namespace URL_PREFIX do
   before do
-    unless [link_text('login/'), link_text('signup/')].include?(request.path_info) or 
-	request.path_info =~ /\.css$/ or 
-	@logged_in_user = User.find_by_id(session["user_id"])
+    unless
+        [link_text('login/'), link_text('signup/')].include?(request.path_info) or 
+        request.path_info =~ /\.css$/ or
+        request.path_info =~ /^#{link_text('archive/')}/ or
+        request.path_info =~ /^#{link_text('first_date/')}/ or
+        request.path_info =~ /^#{link_text('last_date/')}/ or
+        request.path_info =~ /^#{link_text('users/')}/ or
+        @logged_in_user = User.find_by_id(session["user_id"])
       redirect to('/login/'), 303
     end
     puts "logged in as:#{@logged_in_user.username}" if @logged_in_user

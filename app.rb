@@ -143,6 +143,13 @@ namespace URL_PREFIX do
     HashTag.new(hashtag).latest.id != postid ? "changed" : ""
   end
 
+  get '/users/' do
+    JSONP(
+      User.all_users.map do |user|
+        user.username
+      end)
+  end
+
   get '/archive/:username/:date_begin/:date_end/' do |username, date_begin, date_end|
     date_format = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
     date_format =~ date_begin or return "bad date_begin"
