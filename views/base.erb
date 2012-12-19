@@ -41,7 +41,7 @@
 	  }
       function doCheckInternal(url) {
 	    $.get(url, function(data) {
-          if (data == "changed") {
+          if (data != "") {
   		    showUrgeReload();
 		  }
 		});

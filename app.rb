@@ -143,6 +143,23 @@ namespace URL_PREFIX do
     HashTag.new(hashtag).latest.id != postid ? "changed" : ""
   end
 
+  get '/latest' do
+    JSONP(Timeline.new('timeline').latest.id.to_i)
+  end
+
+  get '/take/:postid' do |postid|
+    post = Post.new(postid)
+    user = post.user
+    JSONP(
+      [
+        post.id.to_i,
+        post.content,
+        post.created_at,
+        user.username,
+        gravator(user),
+      ])
+  end
+
   get '/users/' do
     JSONP(
       User.all_users.map do |user|

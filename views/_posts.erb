@@ -1,6 +1,6 @@
 
   <% posts.each do |post| %>
-    <div class="post">
+    <div class="post" postid="<%= post.id %>">
 	  <div class="avatar">
         <img src="http://www.gravatar.com/avatar/<%= gravator(author(post)) %>?s=40&d=mm" alt="gravator"/>
 	  </div>
