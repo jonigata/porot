@@ -10,7 +10,7 @@ namespace URL_PREFIX do
         request.path_info =~ /^#{link_text('latest')}/ or
         request.path_info =~ /^#{link_text('take/')}/ or
         @logged_in_user = User.find_by_id(session["user_id"])
-      redirect to('/login/'), 303
+      redirect to('login/'), 303
     end
     puts "logged in as:#{@logged_in_user.username}" if @logged_in_user
   end
@@ -24,7 +24,7 @@ namespace URL_PREFIX do
 	User.hash_pw(user.salt, params[:password]) == user.hashed_password
       session["user_id"] = user.id
       $stderr.puts("login ok")
-      redirect to('/')
+      redirect to('')
     else
       @login_error = "Incorrect username or password"
       $stderr.puts("login failed")
@@ -51,13 +51,13 @@ namespace URL_PREFIX do
     else
       user = User.create(params[:username], params[:password])
       session["user_id"] = user.id
-      redirect to("/")
+      redirect to("")
     end
   end
 
   get '/logout/' do
     session["user_id"] = nil
-    redirect to('/login/')
+    redirect to('login/')
   end
 end
 

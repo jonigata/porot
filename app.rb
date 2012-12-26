@@ -18,8 +18,10 @@ URL_PREFIX=config.url_prefix
 module Sinatra::Namespace
   module InstanceMethods
     def to(uri, *args)
+      p uri
       uri.gsub!(/^\//, '')
-      super("#{@namespace.pattern}#{uri}", *args)
+      p uri
+      super("#{@namespace.pattern}/#{uri}", *args)
     end
   end
 
@@ -45,7 +47,7 @@ namespace URL_PREFIX do
     # keys = redis.keys("*")
   end
 
-  get %r{#{URL_PREFIX}/(.*\.(js|css|png|gif))} do |path, ext|
+  get %r{/(.*\.(js|css|png|gif))} do |path, ext|
     send_file File.join(settings.public_folder, path)
   end
 
@@ -210,17 +212,17 @@ namespace URL_PREFIX do
   get '/follow/:follower/:followee/*' do |follower_username, followee_username, after|
     follower = User.find_by_username(follower_username)
     followee = User.find_by_username(followee_username)
-    redirect to('/') unless @logged_in_user == follower
+    redirect to('') unless @logged_in_user == follower
     follower.follow(followee)
-    redirect to("/#{after}")
+    redirect to("#{after}")
   end
 
   get '/stopfollow/:follower/:followee/*' do |follower_username, followee_username, after|
     follower = User.find_by_username(follower_username)
     followee = User.find_by_username(followee_username)
-    redirect to('/') unless @logged_in_user == follower
+    redirect to('') unless @logged_in_user == follower
     follower.stop_following(followee)
-    redirect to("/#{after}")
+    redirect to("#{after}")
   end
 
 end
@@ -380,18 +382,18 @@ helpers do
   def post_status(current, content)
     make_status(current, content, true) do
       Post.create(@logged_in_user, content)
-      redirect to("/#{current}")
+      redirect to("#{current}")
     end
   end
 
   def edit_status(post_id, current, content)
     post = Post.new(post_id.to_i)
     if post.user_id != @logged_in_user.id
-      redirect to("/#{current}")
+      redirect to("#{current}")
     else
       make_status(current, content, false) do
         post.edit(content)
-        redirect to("/#{current}")
+        redirect to("#{current}")
       end
     end
   end
@@ -415,24 +417,24 @@ helpers do
 
   def register_mail_address(current, mail_address)
     @logged_in_user.mail_address = mail_address
-    redirect to("/#{current}")
+    redirect to("#{current}")
   end
 
   def retweet(current, postid)
     Post.retweet(@logged_in_user, postid)
-    redirect to("/#{current}")
+    redirect to("#{current}")
   end
 
   def delete_hashtag(current, postid, hashtag)
     Post.new(postid).delete_hashtag(hashtag)
     p current 
-    redirect to("/#{current}")
+    redirect to("#{current}")
   end
 
   def add_hashtag(current, postid, hashtag)
     Post.new(postid).add_hashtag(hashtag)
     p current 
-    redirect to("/#{current}")
+    redirect to("#{current}")
   end
 
   def generate_personal_menu_item(item)

@@ -270,7 +270,7 @@ class Post < Model
     source = Post.new(source_id)
     create_post(user, source.content, source.original_id, source.created_at)
   end
-
+  
   property :content
   property :user_id
   property :created_at
@@ -290,7 +290,7 @@ class Post < Model
     self.content = content
     now = Time.new.to_i
     content.scan(/[#＃](\w+)/u).each do |hashtag|
-      redis.zadd("hashtag:#{$1}", now, post_id)
+      redis.zadd("hashtag:#{$1}", now, self.id)
       redis.zadd("hashtags", now, hashtag)
     end
   end
