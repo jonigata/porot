@@ -9,6 +9,7 @@ namespace URL_PREFIX do
         request.path_info =~ /^#{link_text('users/')}/ or
         request.path_info =~ /^#{link_text('latest')}/ or
         request.path_info =~ /^#{link_text('take/')}/ or
+        request.path_info =~ /^#{link_text('post_automatic/')}/ or
         @logged_in_user = User.find_by_id(session["user_id"])
       redirect to('login/'), 303
     end

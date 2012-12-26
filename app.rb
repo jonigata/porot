@@ -205,6 +205,16 @@ namespace URL_PREFIX do
     edit_status(params[:post_id], after, params[:content])
   end
 
+  get '/post_automatic/:username/:password/:content' do |username, password, content|
+    if user = User.find_by_username(username) and
+        User.hash_pw(user.salt, password) == user.hashed_password
+      make_status('', content, true) do
+        Post.create(user, content)
+        "OK"
+      end
+    end
+  end
+
   post '/register_mail_address/*' do |after|
     register_mail_address(after, params[:mail_address])
   end
