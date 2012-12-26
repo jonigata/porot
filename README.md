@@ -17,7 +17,7 @@ Starting Application
 
 Follow instruction of retwis-rb after install some gems.
 
- * sudo gem install redis sinatra-r18n sinatra-contrib sinatra-jsonp thin
+ * sudo gem install redis sinatra-r18n sinatra-contrib sinatra-jsonp thin sanitize
 
 Major modification from retwis-rb
 ---------------------------------

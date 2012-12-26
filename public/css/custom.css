@@ -143,3 +143,8 @@ textarea {
   width: 48px;
   float: left;
 }
+
+.deleted {
+  font-size: 75%;
+  color: #999;
+}

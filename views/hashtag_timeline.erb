@@ -2,7 +2,7 @@
   
   <% if hashtag %>
     <div id="hashtag_timeline" class="posts span-15">
-      <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_hashtag_posts(hashtag, page), :older_link => "#{current}#{page+1}"} %>
+      <%= erb :_posts, :locals => {:current => current, :page => page, :posts => get_hashtag_posts(hashtag, page), :older_url => older_url(current, page + 1) } %>
 
 	  <script type="text/javascript">
 		function doCheck() {

@@ -1,7 +1,7 @@
   <h3><%= "#{t.site.profile_prefix}#{t.site.name_prefix}#{target_user.username}#{t.site.name_suffix}#{t.site.profile_suffix}" %></h3>
   
   <div id="target_timeline" class="posts span-15">
-    <%= erb :_posts, :locals => {:current => current, :page => page, :posts => target_user.posts(page), :older_link => "#{current}#{page+1}"} %>
+    <%= erb :_posts, :locals => {:current => current, :page => page, :posts => target_user.posts(page), :older_url => older_url(current, page + 1) } %>
 
     <script type="text/javascript">
 	  function doCheck() {

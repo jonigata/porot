@@ -44,6 +44,7 @@ site:
   register_mail_address: 登録する
   register_or_modify_mail_address: 登録/修正する
   new_posts_detected: 新しいポストがあります
+  deleted: 'この投稿は投稿者により削除されています'
 time:
   just_now: 今さっき
   less_than_a_minute_ago: 1分くらい前

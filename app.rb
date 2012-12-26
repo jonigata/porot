@@ -9,6 +9,7 @@ require 'sinatra/r18n'
 require 'sinatra/jsonp'
 require 'cgi'
 require 'digest/md5'
+require 'sanitize'
 
 require 'config'
 
@@ -17,6 +18,7 @@ URL_PREFIX=config.url_prefix
 module Sinatra::Namespace
   module InstanceMethods
     def to(uri, *args)
+      uri.gsub!(/^\//, '')
       super("#{@namespace.pattern}#{uri}", *args)
     end
   end
@@ -43,8 +45,8 @@ namespace URL_PREFIX do
     # keys = redis.keys("*")
   end
 
-  get %r{#{URL_PREFIX}/(.*\.(js|css|png|gif))} do |path|
-    send_file File.join(settings.public_folder, path[0])
+  get %r{#{URL_PREFIX}/(.*\.(js|css|png|gif))} do |path, ext|
+    send_file File.join(settings.public_folder, path)
   end
 
   get '/' do
@@ -193,6 +195,14 @@ namespace URL_PREFIX do
     post_status(after, params[:content])
   end
 
+  post '/edit/' do
+    edit_status(params[:post_id], '', params[:content])
+  end
+
+  post '/edit/*' do |after|
+    edit_status(params[:post_id], after, params[:content])
+  end
+
   post '/register_mail_address/*' do |after|
     register_mail_address(after, params[:mail_address])
   end
@@ -218,6 +228,7 @@ end
 helpers Sinatra::Jsonp
 helpers do
   def link_text(action)
+    action.gsub!(/^\//, '')
     "#{URL_PREFIX}/#{action}"
   end
 
@@ -238,6 +249,12 @@ helpers do
     "<a class='hashtag' #{href(action)}>#{hashtag}</a>"
   end
   
+  def older_url(current, page)
+    current.gsub(/\/[0-9]*$/, "/#{page}").tap do |c|
+      p c
+    end
+  end
+
   def pluralize(singular, plural, count)
     if count == 1
       count.to_s + " " + singular
@@ -247,16 +264,20 @@ helpers do
   end
   
   def display_post_content(content)
-    content.gsub(/@\w+/) do |mention|
-      if user = User.find_by_username(mention[1..-1])
-        "@" + link_to_user(user)
-      else
-        mention
+    if content == ''
+      "<span class='deleted'>#{t.site.deleted}</span>"
+    else
+      Sanitize.clean(content).gsub(/@\w+/) do |mention|
+        if user = User.find_by_username(mention[1..-1])
+          "@" + link_to_user(user)
+        else
+          mention
+        end
+      end.gsub(/[#＃](\w+)/u) do |hashtag|
+        link_to_hashtag($1)
+      end.gsub(URI.regexp) do |uri|
+        "<a class='external-link' href='#{uri}' target='_blank'>#{uri}</a>"
       end
-    end.gsub(/[#＃](\w+)/u) do |hashtag|
-      link_to_hashtag($1)
-    end.gsub(URI.regexp) do |uri|
-      "<a class='external-link' href='#{uri}'>#{t.site.link}</a>"
     end
   end
 
@@ -312,11 +333,11 @@ helpers do
   end
 
   def render_home(page)
-    render_body('', config.arrangement.home, :page => page)
+    render_body("/#{page}", config.arrangement.home, :page => page)
   end
 
   def render_timeline(page)
-    render_body('timeline/', config.arrangement.timeline, :target_user => @logged_in_user, :page => page)
+    render_body("timeline/#{page}", config.arrangement.timeline, :target_user => @logged_in_user, :page => page)
   end
 
   def render_profile(username, page)
@@ -324,7 +345,7 @@ helpers do
   end
 
   def render_mentions(username, page)
-    render_body("mentions/#{username}/", config.arrangement.mentions, :target_user => find_user(username), :page => page)
+    render_body("mentions/#{username}/#{page}", config.arrangement.mentions, :target_user => find_user(username), :page => page)
   end    
 
   def render_hashtags(tagpage, postpage)
@@ -357,20 +378,38 @@ helpers do
   end
 
   def post_status(current, content)
+    make_status(current, content, true) do
+      Post.create(@logged_in_user, content)
+      redirect to("/#{current}")
+    end
+  end
+
+  def edit_status(post_id, current, content)
+    post = Post.new(post_id.to_i)
+    if post.user_id != @logged_in_user.id
+      redirect to("/#{current}")
+    else
+      make_status(current, content, false) do
+        post.edit(content)
+        redirect to("/#{current}")
+      end
+    end
+  end
+
+  def make_status(current, content, deny_blank)
     len = content.split(//u).length
-    if len == 0
+    if deny_blank && len == 0
       posting_error = "You didn't enter anything."
     elsif len > 140
       posting_error = "Keep it to 140 characters please!"
     end
     if posting_error
-      render_body("/post",
+      render_body(current,
                   config.arrangement.home,
                   :page => 1,
                   :posting_error => posting_error) 
     else
-      Post.create(@logged_in_user, content)
-      redirect to("/#{current}")
+      yield content
     end
   end
 
@@ -386,11 +425,13 @@ helpers do
 
   def delete_hashtag(current, postid, hashtag)
     Post.new(postid).delete_hashtag(hashtag)
+    p current 
     redirect to("/#{current}")
   end
 
   def add_hashtag(current, postid, hashtag)
     Post.new(postid).add_hashtag(hashtag)
+    p current 
     redirect to("/#{current}")
   end
 

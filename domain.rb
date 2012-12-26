@@ -284,7 +284,15 @@ class Post < Model
     User.new(user_id)
   end
 
-  def edit
+  def edit(content)
+    Post.normalize(content)
+
+    self.content = content
+    now = Time.new.to_i
+    content.scan(/[#＃](\w+)/u).each do |hashtag|
+      redis.zadd("hashtag:#{$1}", now, post_id)
+      redis.zadd("hashtags", now, hashtag)
+    end
   end
 
   def delete_hashtag(hashtag)

@@ -39,6 +39,14 @@
 			</a>
 		  </span>
 
+		  <!-- edit -->
+		  <span id="ed<%=post.id%>" style='display: inline;'>
+			<a href='javascript:void(0)'
+			   onclick='setupEditPost("ef<%=post.id%>");'>
+			  編集
+			</a>
+		  </span>
+
 		  <!-- delete_hashtag -->
 		  <span id="dt<%=post.id%>" style='display: inline;'>
 			<a href='javascript:void(0)'
@@ -83,15 +91,21 @@
 			  <%= t.site.cancel_add_hashtag %>
 			</a>
 		  </span>
-
 		</div>
+      </div>
+      <div id="ef<%= post.id %>" style="display: none;">
+        <form action="<%=link_text("edit/#{current}")%>" method="post">
+          <textarea id="postarea" name="content" rows="3" columns="70" onkeyup="showLength('ed<%= post.id %>-input-length', value);"><%= content %></textarea><br />
+          <input type="hidden" name="post_id" value="<%= post.id %>">
+          <input type="submit" value="Edit"> <span id="ed<%= post.id %>-input-length"></span>
+        </form>
       </div>
     </div>
   <% end %>
-  <% if older_link %>
+  <% if older_url %>
     <% if posts.empty? %>
       <%= t.site.no_posts %>
     <% else %>
-      <%= link_to("<i>#{t.site.older} >></i>", older_link) %>
+      <%= link_to("<i>#{t.site.older} >></i>", older_url) %>
     <% end %>
   <% end %>
