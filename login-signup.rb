@@ -35,6 +35,8 @@ namespace URL_PREFIX do
   post '/signup/' do
     if params[:username] !~ /^\w+$/
       @signup_error = "Username must only contain letters, numbers and underscores."
+    elsif params[:username] == 'all'
+      @signup_error = "That username is taken."
     elsif redis.exists("user:username:#{params[:username]}")
       @signup_error = "That username is taken."
     elsif params[:username].length < 4

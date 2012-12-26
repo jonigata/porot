@@ -85,8 +85,31 @@ class Model
   end
 end  
 
+class AllUser
+  def archive(b, e)
+    # 効率悪い
+    redis.lrange('timeline', 0, -1).map do |post_id|
+      post = Post.new(post_id)
+      t = post.created_at
+      b <= t && t < e ? [User.new(post.user_id).username, post.created_at, post.content] : nil
+    end.compact
+  end
+
+  def first_date
+    r = redis.lrange("timeline", -1, -1)
+    r.empty? ? nil : Post.new(r[0]).created_at
+  end
+
+  def last_date
+    r = redis.lrange("timeline", 0, 0)
+    r.empty? ? nil : Post.new(r[0]).created_at
+  end
+  
+end
+
 class User < Model
   def self.find_by_username(username)
+    return AllUser.new if username == 'all'
     if id = redis.get("user:username:#{username}")
       User.new(id)
     end
@@ -150,11 +173,13 @@ class User < Model
   end
 
   def archive(b, e)
+    username = self.username
+
     # 効率悪い
     redis.lrange("user:id:#{id}:posts", 0, -1).map do |post_id|
       post = Post.new(post_id)
       t = post.created_at
-      b <= t && t < e ? [post.created_at, post.content] : nil
+      b <= t && t < e ? [username, post.created_at, post.content] : nil
     end.compact
   end
 
