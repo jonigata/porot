@@ -24,6 +24,13 @@
       function setupElement(id1, id2) {
         showElement(id1); hideElement(id2); return false;
       }
+      function setupReply(id) {
+        var e = $('#postarea');
+        e.val('@'+id+' ');
+        e.focus();
+        var len = e.val().length;
+        e[0].setSelectionRange(len, len);
+      }
 
 	  function clearDefaultValue(e, s) {
 	    if (e.value == s) {

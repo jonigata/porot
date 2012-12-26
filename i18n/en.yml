@@ -25,6 +25,7 @@ site:
   timeline_suffix: ""
   hashtag_prefix: "Hash tag: "
   hashtag_suffix: ""  
+  reply: "reply"
   start_retweet: RT
   invoke_retweet: "do RT"
   cancel_retweet: "cancel RT"

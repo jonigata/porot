@@ -25,6 +25,7 @@ site:
   timeline_suffix: "のタイムライン"
   hashtag_prefix: "ハッシュタグ "
   hashtag_suffix: ""  
+  reply: "リプライ"
   start_retweet: RT
   invoke_retweet: RTする
   cancel_retweet: やっぱりやめる
